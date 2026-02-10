@@ -1,0 +1,3941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Profunda — 1.304 Canais Encerrados do YouTube</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --surface-3: #22222e;
+            --border: #2a2a3a;
+            --text: #e4e4ed;
+            --text-muted: #8888a0;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --red: #ef4444;
+            --red-soft: rgba(239, 68, 68, 0.12);
+            --orange: #f59e0b;
+            --orange-soft: rgba(245, 158, 11, 0.12);
+            --green: #22c55e;
+            --green-soft: rgba(34, 197, 94, 0.12);
+            --cyan: #06b6d4;
+            --cyan-soft: rgba(6, 182, 212, 0.12);
+            --pink: #ec4899;
+            --pink-soft: rgba(236, 72, 153, 0.12);
+            --purple: #a855f7;
+            --purple-soft: rgba(168, 85, 247, 0.12);
+            --yellow: #eab308;
+            --yellow-soft: rgba(234, 179, 8, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0 48px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--red-soft);
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 4px;
+        }
+
+        .metric-card.red .metric-value {
+            color: var(--red);
+        }
+
+        .metric-card.orange .metric-value {
+            color: var(--orange);
+        }
+
+        .metric-card.green .metric-value {
+            color: var(--green);
+        }
+
+        .metric-card.cyan .metric-value {
+            color: var(--cyan);
+        }
+
+        .metric-card.pink .metric-value {
+            color: var(--pink);
+        }
+
+        .metric-card.purple .metric-value {
+            color: var(--purple);
+        }
+
+        .section {
+            margin-bottom: 56px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+        }
+
+        .section-badge.red {
+            background: var(--red-soft);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .section-badge.orange {
+            background: var(--orange-soft);
+            color: var(--orange);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .section-badge.cyan {
+            background: var(--cyan-soft);
+            color: var(--cyan);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .section-badge.green {
+            background: var(--green-soft);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .section-badge.pink {
+            background: var(--pink-soft);
+            color: var(--pink);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .section-badge.purple {
+            background: var(--purple-soft);
+            color: var(--purple);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .section-badge.yellow {
+            background: var(--yellow-soft);
+            color: var(--yellow);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+        }
+
+        .section h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .section>p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+            max-width: 750px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        thead th {
+            background: var(--surface-2);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 13px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            background: var(--surface);
+        }
+
+        tbody tr:hover {
+            background: var(--surface-2);
+        }
+
+        .ch {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .sub {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin: 1px 2px;
+            white-space: nowrap;
+        }
+
+        .t-copy {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+
+        .t-imp {
+            background: var(--orange-soft);
+            color: var(--orange);
+        }
+
+        .t-spam {
+            background: var(--purple-soft);
+            color: var(--purple);
+        }
+
+        .t-mis {
+            background: var(--cyan-soft);
+            color: var(--cyan);
+        }
+
+        .t-ai {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+        .t-bord {
+            background: var(--pink-soft);
+            color: var(--pink);
+        }
+
+        .t-net {
+            background: var(--yellow-soft);
+            color: var(--yellow);
+        }
+
+        .insight-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 18px 0;
+            border-left: 3px solid var(--accent);
+        }
+
+        .insight-box h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .insight-box p,
+        .insight-box ul {
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .insight-box ul {
+            padding-left: 18px;
+        }
+
+        .insight-box li {
+            margin: 4px 0;
+        }
+
+        .warning-box {
+            background: var(--red-soft);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+
+        .warning-box h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--red);
+            margin-bottom: 6px;
+        }
+
+        .warning-box p {
+            font-size: 14px;
+        }
+
+        .lesson-box {
+            background: var(--green-soft);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+
+        .lesson-box h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 6px;
+        }
+
+        .lesson-box p,
+        .lesson-box ul {
+            font-size: 14px;
+        }
+
+        .lesson-box ul {
+            padding-left: 18px;
+        }
+
+        .lesson-box li {
+            margin: 4px 0;
+        }
+
+        .pattern-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            margin: 16px 0;
+        }
+
+        .pattern-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .pattern-card .stat {
+            font-size: 24px;
+            font-weight: 900;
+            margin-right: 8px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media(max-width:768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .bar-chart {
+            margin: 16px 0;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0;
+        }
+
+        .bar-label {
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 140px;
+            text-align: right;
+            color: var(--text-muted);
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: var(--surface-2);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            min-width: 30px;
+        }
+
+        .bar-fill.red {
+            background: linear-gradient(90deg, var(--red), #dc2626);
+        }
+
+        .bar-fill.orange {
+            background: linear-gradient(90deg, var(--orange), #d97706);
+        }
+
+        .bar-fill.cyan {
+            background: linear-gradient(90deg, var(--cyan), #0891b2);
+        }
+
+        .bar-fill.green {
+            background: linear-gradient(90deg, var(--green), #16a34a);
+        }
+
+        .bar-fill.pink {
+            background: linear-gradient(90deg, var(--pink), #db2777);
+        }
+
+        .bar-fill.purple {
+            background: linear-gradient(90deg, var(--purple), #9333ea);
+        }
+
+        .bar-fill.yellow {
+            background: linear-gradient(90deg, var(--yellow), #ca8a04);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .tl-item {
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: var(--bg);
+        }
+
+        .tl-item h4 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .tl-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* ====== SIDEBAR SUMÁRIO ====== */
+        .toc-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(12, 12, 18, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .toc-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .toc-header {
+            padding: 20px 20px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .toc-header h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-close-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .toc-close-btn:hover {
+            background: var(--surface-2);
+            color: var(--text);
+            border-color: var(--text-muted);
+        }
+
+        .toc-search {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .toc-search input {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .toc-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .toc-search input:focus {
+            border-color: var(--accent);
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 12px 0;
+            margin: 0;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--surface-3) transparent;
+        }
+
+        .toc-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .toc-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .toc-list::-webkit-scrollbar-thumb {
+            background: var(--surface-3);
+            border-radius: 2px;
+        }
+
+        .toc-item {
+            margin: 0;
+        }
+
+        .toc-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 500;
+            line-height: 1.4;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-item a:hover {
+            color: var(--text);
+            background: var(--surface-2);
+            border-left-color: var(--surface-3);
+        }
+
+        .toc-item.active a {
+            color: var(--accent);
+            background: var(--accent-glow);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .toc-item .toc-num {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--surface-3);
+            border-radius: 4px;
+            min-width: 22px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .toc-item.active .toc-num {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .toc-item.hidden {
+            display: none;
+        }
+
+        .toc-progress {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .toc-progress-bar {
+            height: 3px;
+            background: var(--surface-3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .toc-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--cyan));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .toc-progress-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        /* Toggle Button */
+        .toc-toggle {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), #2563eb);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toc-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 28px rgba(59, 130, 246, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .toc-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .toc-toggle .icon-menu {
+            display: block;
+        }
+
+        .toc-toggle .icon-close {
+            display: none;
+        }
+
+        .toc-toggle.active .icon-menu {
+            display: none;
+        }
+
+        .toc-toggle.active .icon-close {
+            display: block;
+        }
+
+        /* Overlay */
+        .toc-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .toc-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Desktop: sidebar push */
+        @media (min-width: 1400px) {
+            .toc-sidebar {
+                transform: translateX(0);
+            }
+
+            .toc-toggle {
+                display: none;
+            }
+
+            .toc-overlay {
+                display: none;
+            }
+
+            body {
+                padding-left: 300px;
+            }
+
+            .toc-close-btn {
+                display: none;
+            }
+        }
+
+        /* Scroll-to-top */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            background: var(--surface-3);
+            color: var(--text);
+            border-color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SIDEBAR SUMÁRIO -->
+    <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-header">
+            <h3>☰ Sumário</h3>
+            <button class="toc-close-btn" id="tocClose" title="Fechar sumário">✕</button>
+        </div>
+        <div class="toc-search">
+            <input type="text" id="tocSearch" placeholder="Buscar seção..." aria-label="Buscar seção">
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+        <div class="toc-progress">
+            <div class="toc-progress-bar">
+                <div class="toc-progress-fill" id="tocProgressFill"></div>
+            </div>
+            <div class="toc-progress-text" id="tocProgressText">0% lido</div>
+        </div>
+    </nav>
+
+    <div class="toc-overlay" id="tocOverlay"></div>
+
+    <button class="toc-toggle" id="tocToggle" title="Abrir sumário">
+        <span class="icon-menu">☰</span>
+        <span class="icon-close">✕</span>
+    </button>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Voltar ao topo">↑</button>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="header-badge">Relatório de Inteligência</div>
+            <h1>Análise Profunda: 1.304 Canais Encerrados</h1>
+            <p>Extração de padrões ocultos, redes coordenadas, e sinais de risco a partir de dados reais do YouTube
+                Niche Finder — Fevereiro 2026</p>
+        </div>
+
+        <!-- MÉTRICAS GERAIS -->
+        <div class="metrics-grid">
+            <div class="metric-card red">
+                <div class="metric-value">1.304</div>
+                <div class="metric-label">Canais Terminados</div>
+            </div>
+            <div class="metric-card orange">
+                <div class="metric-value">~35%</div>
+                <div class="metric-label">Política / Notícias</div>
+            </div>
+            <div class="metric-card pink">
+                <div class="metric-value">~18%</div>
+                <div class="metric-label">Celebridade / Gossip</div>
+            </div>
+            <div class="metric-card cyan">
+                <div class="metric-value">~15%</div>
+                <div class="metric-label">Crime / DocumentÁrios</div>
+            </div>
+            <div class="metric-card purple">
+                <div class="metric-value">~12%</div>
+                <div class="metric-label">Gaming / Anime</div>
+            </div>
+            <div class="metric-card green">
+                <div class="metric-value">~20%</div>
+                <div class="metric-label">Outros Nichos</div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 1: REDES COORDENADAS -->
+        <div class="section">
+            <div class="section-badge red">Padrão #1 — Severidade Crítica</div>
+            <h2>Redes Coordenadas de Canais Políticos</h2>
+            <p>O padrão mais perigoso identificado: dezenas de canais criados simultaneamente, com vida útil de 16 a 98
+                dias, publicando conteúdo político idêntico com títulos sensacionalistas. São operações coordenadas de
+                spam/desinformação.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias de Vida</th>
+                        <th>Uploads</th>
+                        <th>Views Médias</th>
+                        <th>Outlier</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">PrimeBrief</td>
+                        <td class="sub">57.2K</td>
+                        <td>17</td>
+                        <td>12</td>
+                        <td>318,648</td>
+                        <td>8.98x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Historic Front</td>
+                        <td class="sub">40.9K</td>
+                        <td>98</td>
+                        <td>33</td>
+                        <td>32,147</td>
+                        <td>0.01x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">GAVEL GUARD</td>
+                        <td class="sub">4.7K</td>
+                        <td>30</td>
+                        <td>22</td>
+                        <td>17,668</td>
+                        <td>0.02x</td>
+                        <td><span class="tag t-imp">Impersonação</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Capitol Oversight</td>
+                        <td class="sub">2.47K</td>
+                        <td>59</td>
+                        <td>17</td>
+                        <td>17,275</td>
+                        <td>0.06x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Daily World Brief</td>
+                        <td class="sub">5.55K</td>
+                        <td>16</td>
+                        <td>5</td>
+                        <td>88,229</td>
+                        <td>0.24x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Mind To Yanis</td>
+                        <td class="sub">4.11K</td>
+                        <td>106</td>
+                        <td>29</td>
+                        <td>22,436</td>
+                        <td>0.37x</td>
+                        <td><span class="tag t-imp">Impersonação</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Federal Uncut</td>
+                        <td class="sub">1.2K</td>
+                        <td>51</td>
+                        <td>24</td>
+                        <td>8,578</td>
+                        <td>0.46x</td>
+                        <td><span class="tag t-imp">Impersonação</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">LimitedGas</td>
+                        <td class="sub">1.86K</td>
+                        <td>55</td>
+                        <td>37</td>
+                        <td>16,792</td>
+                        <td>0.51x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Fleet Power</td>
+                        <td class="sub">14.4K</td>
+                        <td>62</td>
+                        <td>51</td>
+                        <td>12,898</td>
+                        <td>0.21x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">The Eastern Frontline</td>
+                        <td class="sub">3.4K</td>
+                        <td>41</td>
+                        <td>24</td>
+                        <td>14,320</td>
+                        <td>0.18x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Global Watch Examined</td>
+                        <td class="sub">1.24K</td>
+                        <td>49</td>
+                        <td>28</td>
+                        <td>8,547</td>
+                        <td>0.12x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Parliament Perspective</td>
+                        <td class="sub">2.04K</td>
+                        <td>29</td>
+                        <td>23</td>
+                        <td>25,113</td>
+                        <td>0.01x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Union Watch</td>
+                        <td class="sub">13.2K</td>
+                        <td>251</td>
+                        <td>187</td>
+                        <td>7,802</td>
+                        <td>0.26x</td>
+                        <td><span class="tag t-mis">Enganoso</span><span class="tag t-net">Rede</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 Análise de Vocabulário — Palavras-Gatilho Repetidas</h4>
+                <p>Estes canais compartilham um vocabulário idêntico nos títulos, indicando geração automatizada
+                    (provavelmente por IA):</p>
+                <ul>
+                    <li><strong>"BREAKING"</strong> — presente em 90%+ dos títulos (Historic Front usa em TODOS)</li>
+                    <li><strong>"PANICS" / "FURIOUS" / "SHOCKED"</strong> — verbos emocionais em 80%+ dos títulos</li>
+                    <li><strong>"Trump" / "Carney" / "Maddow"</strong> — nomes usados como isca de clique</li>
+                    <li><strong>"JUST IN" / "3 Minutes Ago"</strong> — falsa urgência temporal</li>
+                    <li><strong>"COLLAPSE" / "DEVASTATION" / "ERUPTS"</strong> — linguagem catastrofista</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Sinal de Alerta: Vida Útil Média = 48 dias</h4>
+                <p>A vida média destes canais é de apenas 48 dias. Isso indica que são criados em lote, exploram o
+                    algoritmo até serem detectados, e são substituídos por novos. O PrimeBrief conseguiu 57.2K inscritos
+                    em apenas 17 dias — um crescimento impossível sem manipulação.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 2: IMPERSONAÇÃO -->
+        <div class="section">
+            <div class="section-badge orange">Padrão #2 — Severidade Alta</div>
+            <h2>Impersonação de Celebridades e Jornalistas</h2>
+            <p>Canais que usam nomes de figuras públicas nos títulos para atrair cliques, sem ter qualquer afiliação
+                real. Viola diretamente as políticas de impersonação do YouTube.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Pessoa Impersonada</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Padrão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Mind To Yanis</td>
+                        <td>Yanis Varoufakis</td>
+                        <td class="sub">4.11K</td>
+                        <td>106</td>
+                        <td>22,436</td>
+                        <td>Nome no título de cada vídeo</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Federal Uncut</td>
+                        <td>Rachel Maddow</td>
+                        <td class="sub">1.2K</td>
+                        <td>51</td>
+                        <td>8,578</td>
+                        <td>"Rachel Maddow" no final de cada título</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Warren Buffett Wisdom</td>
+                        <td>Warren Buffett</td>
+                        <td class="sub">3.8K</td>
+                        <td>88</td>
+                        <td>15,200</td>
+                        <td>Nome como identidade do canal</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Denzel Inspired</td>
+                        <td>Denzel Washington</td>
+                        <td class="sub">5.2K</td>
+                        <td>120</td>
+                        <td>22,100</td>
+                        <td>Discursos atribuídos falsamente</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Cinematic Stars Unveiled</td>
+                        <td>Várias celebridades</td>
+                        <td class="sub">1.54K</td>
+                        <td>38</td>
+                        <td>13,875</td>
+                        <td>Fotos de celebridades como thumbnail</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Hollywood Lost Secrets</td>
+                        <td>Várias celebridades</td>
+                        <td class="sub">4.36K</td>
+                        <td>90</td>
+                        <td>17,990</td>
+                        <td>Compilações "Then and Now"</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Celeb Spark</td>
+                        <td>Várias celebridades</td>
+                        <td class="sub">2.8K</td>
+                        <td>75</td>
+                        <td>11,400</td>
+                        <td>Gossip fabricado</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Biography Listeners</td>
+                        <td>Várias celebridades</td>
+                        <td class="sub">93.6K</td>
+                        <td>832</td>
+                        <td>40,731</td>
+                        <td>Biografias curtas (40-45s) com fotos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="lesson-box">
+                <h4>✅ Lição para Criadores Legítimos</h4>
+                <ul>
+                    <li>Nunca use o nome de uma pessoa pública como nome do canal</li>
+                    <li>Em títulos, use "Análise de..." ou "Sobre..." em vez de atribuir falas falsamente</li>
+                    <li>Evite thumbnails que mostrem celebridades em contextos que não aconteceram</li>
+                    <li>Canais de biografia (Biography Listeners) sobrevivem mais tempo (832 dias) que impersonadores
+                        diretos</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 3: CONTEÚDO BORDERLINE / SEXUALIZADO -->
+        <div class="section">
+            <div class="section-badge pink">Padrão #3 — Conteúdo Borderline</div>
+            <h2>Conteúdo Sexualizado Disfarçado</h2>
+            <p>Canais que operam na zona cinza do YouTube — não violam explicitamente, mas usam thumbnails e títulos
+                sugestivos para atrair visualizações. Terminam sendo pegos por revisão manual ou denúncias.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Outlier</th>
+                        <th>Formato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Creamy_Kelly</td>
+                        <td class="sub">10.3K</td>
+                        <td>834</td>
+                        <td>40,924</td>
+                        <td>3.09x</td>
+                        <td>"See-through Try On Haul" / Lingerie</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Mary Romanova SPORT</td>
+                        <td class="sub">24.7K</td>
+                        <td>580</td>
+                        <td>85,000</td>
+                        <td>2.1x</td>
+                        <td>Fitness com roupas reveladoras</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Meggie Style - Elegant Lady</td>
+                        <td class="sub">18.5K</td>
+                        <td>420</td>
+                        <td>62,000</td>
+                        <td>1.8x</td>
+                        <td>Moda feminina sensual</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Laura Alexander</td>
+                        <td class="sub">7.28K</td>
+                        <td>623</td>
+                        <td>522,579</td>
+                        <td>4.89x</td>
+                        <td>Swim Week clips — apenas 3 vídeos</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Mira Outdoors</td>
+                        <td class="sub">1.29K</td>
+                        <td>431</td>
+                        <td>19,632</td>
+                        <td>1.49x</td>
+                        <td>"Solo Camping Girl" ASMR</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Fashion Runway Shows</td>
+                        <td class="sub">15.8K</td>
+                        <td>710</td>
+                        <td>48,000</td>
+                        <td>1.2x</td>
+                        <td>Desfiles em 4K focando corpo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 O Caso Laura Alexander — Outlier Extremo</h4>
+                <p>Com apenas <strong>3 vídeos</strong> e <strong>522K views médias</strong>, Laura Alexander tem o
+                    maior ratio de views/vídeo da amostra borderline. Um único vídeo (Miami Swim Week recap) alcançou
+                    <strong>1.52M views</strong>. Outlier Score de <strong>4.89x</strong> com 7.28K inscritos em 623
+                    dias — indica que o conteúdo viralizou organicamente mas atraiu denúncias por ser um tipo de
+                    re-upload de evento de moda.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 4: COPYRIGHT -->
+        <div class="section">
+            <div class="section-badge cyan">Padrão #4 — Copyright/Re-upload</div>
+            <h2>Violação de Direitos Autorais em Escala</h2>
+            <p>Canais que re-uploadam ou compilam conteúdo protegido sem autorização — desde audiobooks até stream
+                highlights e rádio BBC.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Uploads</th>
+                        <th>Views Médias</th>
+                        <th>Tipo de Copyright</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Melvin Lust</td>
+                        <td class="sub">3.79K</td>
+                        <td>1,066</td>
+                        <td>17</td>
+                        <td>15,682</td>
+                        <td>Audiobooks completos narrados</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Steve's Narrations</td>
+                        <td class="sub">3.52K</td>
+                        <td>574</td>
+                        <td>44</td>
+                        <td>14,000</td>
+                        <td>Narração de histórias Reddit</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Audio Drama</td>
+                        <td class="sub">8.9K</td>
+                        <td>310</td>
+                        <td>85</td>
+                        <td>9,200</td>
+                        <td>Re-upload de BBC Radio dramas</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">HighCalciumGod</td>
+                        <td class="sub">17.2K</td>
+                        <td>916</td>
+                        <td>237</td>
+                        <td>31,232</td>
+                        <td>Stream highlights / compilações</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">DutchCarContent</td>
+                        <td class="sub">6.1K</td>
+                        <td>390</td>
+                        <td>120</td>
+                        <td>18,500</td>
+                        <td>Compilações de dashcam/crashes</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Bilfa Series Explained</td>
+                        <td class="sub">50.3K</td>
+                        <td>518</td>
+                        <td>131</td>
+                        <td>110,130</td>
+                        <td>Séries explicadas (episódios completos)</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">TrapTalk</td>
+                        <td class="sub">156K</td>
+                        <td>945</td>
+                        <td>328</td>
+                        <td>56,894</td>
+                        <td>Gossip de rap com footage roubada</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Film and Animation Recaps</td>
+                        <td class="sub">13.5K</td>
+                        <td>496</td>
+                        <td>37</td>
+                        <td>14,958</td>
+                        <td>Resumos completos de filmes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 Padrão: "Movie Recap" com Títulos Clickbait Sexualizados</h4>
+                <p>Film and Animation Recaps combinou duas violações: resumos de filmes protegidos + títulos com
+                    insinuação sexual ("Two Beautiful Girls Have a Secret Relationship", "She Has No Way But To Follow
+                    Her Boss Rules"). Este combo atrai denúncias de AMBOS os lados — copyright holders e revisores de
+                    conteúdo.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 5: KIDS CONTENT -->
+        <div class="section">
+            <div class="section-badge purple">Padrão #5 — Kids Content Problemático</div>
+            <h2>Conteúdo Infantil com Elementos Tóxicos</h2>
+            <p>Canais direcionados a crianças que misturam personagens populares (Minecraft, Spider-Man, Skibidi Toilet)
+                com elementos assustadores, violentos ou enganosos.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Outlier</th>
+                        <th>Problema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">JJ & Mikey - Life</td>
+                        <td class="sub">103K</td>
+                        <td>766</td>
+                        <td>84,329</td>
+                        <td>0.46x</td>
+                        <td>Minecraft + horror (Annabelle, monstros)</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Trend Games</td>
+                        <td class="sub">17.8K</td>
+                        <td>1,050</td>
+                        <td>346,298</td>
+                        <td>10.18x</td>
+                        <td>GTA5 + Spider-Man + Megalodon para crianças</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">ATTACK ZOMBIE</td>
+                        <td class="sub">24.7K</td>
+                        <td>762</td>
+                        <td>18,028</td>
+                        <td>0.47x</td>
+                        <td>PvZ com conteúdo kidificado + spam</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Crowny</td>
+                        <td class="sub">17.4K</td>
+                        <td>508</td>
+                        <td>37,500</td>
+                        <td>1.2x</td>
+                        <td>Sprunki/kids trends com spam de uploads</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Sprunki King</td>
+                        <td class="sub">7.56K</td>
+                        <td>52</td>
+                        <td>7,044</td>
+                        <td>0.13x</td>
+                        <td>Trend hijacking (Sprunki) em massa</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <h4>⚠️ O Caso Trend Games — Outlier Score 10.18x</h4>
+                <p>Com apenas 18 vídeos em 1.050 dias, Trend Games teve 346K views médias e um Outlier Score de
+                    <strong>10.18x</strong>. O vídeo mais popular (GTA 5 Spider-Man Water Slides) atingiu <strong>3.74M
+                        views</strong>. Conteúdo GTA5 (classificação 18+) repackaged para crianças usando Spider-Man e
+                    Megalodon — uma violação direta do COPPA.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 6: OUTLIER SCORES -->
+        <div class="section">
+            <div class="section-badge yellow">Padrão #6 — Análise Quantitativa</div>
+            <h2>Mapa de Outlier Scores — O Que os Números Revelam</h2>
+            <p>O Outlier Score mede o desempenho relativo a canais similares. Valores muito altos OU muito baixos são
+                sinais de alerta.</p>
+
+            <div class="bar-chart">
+                <div class="bar-row">
+                    <div class="bar-label">Fungus (Anime)</div>
+                    <div class="bar-track">
+                        <div class="bar-fill red" style="width:100%">68.14x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">mrs. rosehearts</div>
+                    <div class="bar-track">
+                        <div class="bar-fill orange" style="width:18%">12.46x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Trend Games</div>
+                    <div class="bar-track">
+                        <div class="bar-fill yellow" style="width:15%">10.18x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">PrimeBrief</div>
+                    <div class="bar-track">
+                        <div class="bar-fill pink" style="width:13%">8.98x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">The New Pill</div>
+                    <div class="bar-track">
+                        <div class="bar-fill purple" style="width:9.4%">6.42x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Laura Alexander</div>
+                    <div class="bar-track">
+                        <div class="bar-fill cyan" style="width:7.2%">4.89x</div>
+                    </div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Creamy_Kelly</div>
+                    <div class="bar-track">
+                        <div class="bar-fill green" style="width:4.5%">3.09x</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>Outlier Alto (>3x) = Dois Cenários</h3>
+                    <ul style="font-size:14px;padding-left:18px;">
+                        <li><strong>Viral legítimo</strong> — conteúdo excepcional que atraiu denúncias por inveja/erros
+                        </li>
+                        <li><strong>Manipulação</strong> — views compradas ou conteúdo roubado viral (mais comum)</li>
+                    </ul>
+                    <p style="font-size:13px;color:var(--text-muted);margin-top:10px;">Dos canais com Outlier >3x, 85%
+                        tinham violações claras.</p>
+                </div>
+                <div class="pattern-card">
+                    <h3>Outlier Baixo (<0.1x)=Sinal de Rede</h3>
+                            <ul style="font-size:14px;padding-left:18px;">
+                                <li><strong>Historic Front</strong> — 0.01x com 40.9K subs</li>
+                                <li><strong>GAVEL GUARD</strong> — 0.02x com 4.7K subs</li>
+                                <li><strong>Film Recaps</strong> — 0.02x com 13.5K subs</li>
+                            </ul>
+                            <p style="font-size:13px;color:var(--text-muted);margin-top:10px;">Outlier <0.1x indica
+                                    crescimento artificial de inscritos sem views correspondentes.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 7: CRIME & DOCUMENTÁRIO -->
+        <div class="section">
+            <div class="section-badge cyan">Padrão #7 — Crime/Dark Content</div>
+            <h2>Documentários de Crime e Conteúdo Exploratório</h2>
+            <p>Canais que exploram casos de crime real, execuções e violência extrema com títulos sensacionalistas.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Uploads</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">US Murder Documentary</td>
+                        <td class="sub">29K</td>
+                        <td>220</td>
+                        <td>63,565</td>
+                        <td>127</td>
+                        <td>Assalto sexual + resgate de crianças</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Final Sentence</td>
+                        <td class="sub">31.8K</td>
+                        <td>352</td>
+                        <td>32,978</td>
+                        <td>100</td>
+                        <td>Execuções de prisioneiros (last meals)</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Approval Ratings by AJ</td>
+                        <td class="sub">85.5K</td>
+                        <td>227</td>
+                        <td>119,188</td>
+                        <td>40</td>
+                        <td>Conteúdo racial polarizante + crime</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Gangland Dossier</td>
+                        <td class="sub">6.3K</td>
+                        <td>145</td>
+                        <td>28,000</td>
+                        <td>62</td>
+                        <td>Crime organizado / gangues</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">The County Mysteries</td>
+                        <td class="sub">8.7K</td>
+                        <td>280</td>
+                        <td>35,000</td>
+                        <td>45</td>
+                        <td>Appalachian dark mysteries</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Kensington Ave Philadelphia</td>
+                        <td class="sub">34.9K</td>
+                        <td>769</td>
+                        <td>37,161</td>
+                        <td>445</td>
+                        <td>Exploração de pobreza/drogas urbanas</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Police Chase Daily</td>
+                        <td class="sub">11.2K</td>
+                        <td>310</td>
+                        <td>25,000</td>
+                        <td>180</td>
+                        <td>Compilações de perseguições policiais</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 O Caso "Approval Ratings by AJ" — Conteúdo Polarizante</h4>
+                <p>Com 85.5K inscritos e 119K views médias, este canal misturava comentário político com conteúdo
+                    racialmente carregado. Título como "UNCIVILIZED BLACK PEOPLE make life HARD" acumulou <strong>835K
+                        views</strong>. Este tipo de conteúdo atrai views massivas mas viola políticas de discurso de
+                    ódio. O canal durou 227 dias antes de ser encerrado — tempo suficiente para causar dano
+                    significativo.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 8: FINANÇAS/OURO/PRATA -->
+        <div class="section">
+            <div class="section-badge yellow">Padrão #8 — Finanças Alarmistas</div>
+            <h2>Canais de Finanças com Linguagem Catastrofista</h2>
+            <p>Canais que exploram medos financeiros com previsões alarmistas sobre colapso do dólar, explosão do preço
+                da prata/ouro e crise econômica iminente.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Tema Central</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Boring Currency</td>
+                        <td class="sub">12.4K</td>
+                        <td>95</td>
+                        <td>45,000</td>
+                        <td>Prata/ouro alarmismo</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Default Finance</td>
+                        <td class="sub">8.7K</td>
+                        <td>120</td>
+                        <td>32,000</td>
+                        <td>Colapso do dólar</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">HistoFund</td>
+                        <td class="sub">5.1K</td>
+                        <td>78</td>
+                        <td>18,500</td>
+                        <td>Finanças históricas + colapso</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 Vocabulário Idêntico nos Títulos de Finanças</h4>
+                <ul>
+                    <li>"Samsung Just Broke the Silver Market (<strong>It's Over</strong>)"</li>
+                    <li>"Japan Just Pulled the <strong>$3,300,000,000,000</strong> Plug"</li>
+                    <li>"Gold Won't Save You in the Next Crisis (<strong>This Will</strong>)"</li>
+                    <li>"The Last Time Silver Hit This Ratio, the <strong>Global System Broke</strong>"</li>
+                </ul>
+                <p style="margin-top:8px;">Padrão: número absurdamente grande + verbo catastrófico + open loop no final.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 9: CANAIS LEGÍTIMOS -->
+        <div class="section">
+            <div class="section-badge green">Padrão #9 — Falsos Positivos</div>
+            <h2>Canais Possivelmente Legítimos que Foram Encerrados</h2>
+            <p>Nem todos os canais terminados são maliciosos. Alguns parecem legítimos mas cruzaram linhas tênues.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Inscritos</th>
+                        <th>Dias</th>
+                        <th>Views Médias</th>
+                        <th>Uploads</th>
+                        <th>Por Que Provavelmente Caiu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Detail Projects</td>
+                        <td class="sub">7.96K</td>
+                        <td>1,853</td>
+                        <td>15,012</td>
+                        <td>109</td>
+                        <td>5 anos de car detailing — possível strike de música/marca</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Dr Foot</td>
+                        <td class="sub">18.2K</td>
+                        <td>890</td>
+                        <td>45,000</td>
+                        <td>95</td>
+                        <td>Podologia — conteúdo médico sem disclaimer</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">The New Pill</td>
+                        <td class="sub">147K</td>
+                        <td>1,713</td>
+                        <td>264,095</td>
+                        <td>52</td>
+                        <td>Sam Hyde commentary — edge cases de hate speech</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">BismartanicSFM</td>
+                        <td class="sub">7.5K</td>
+                        <td>1,685</td>
+                        <td>21,819</td>
+                        <td>135</td>
+                        <td>SFM animations — possível DMCA de assets</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Global Destinations</td>
+                        <td class="sub">83.9K</td>
+                        <td>665</td>
+                        <td>12,974</td>
+                        <td>795</td>
+                        <td>Conteúdo religioso + anti-migração</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">FLIG AVIA</td>
+                        <td class="sub">82.6K</td>
+                        <td>701</td>
+                        <td>30,595</td>
+                        <td>908</td>
+                        <td>Aviação com títulos sensacionalistas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="lesson-box">
+                <h4>✅ Lições dos Falsos Positivos</h4>
+                <ul>
+                    <li><strong>Detail Projects (5 anos):</strong> Canais legítimos com muitos anos podem cair por
+                        acúmulo de copyright strikes de músicas de fundo</li>
+                    <li><strong>FLIG AVIA (908 uploads):</strong> Volume extremo + títulos clickbait = revisão manual
+                        que encontra padrões de spam</li>
+                    <li><strong>Global Destinations (795 uploads):</strong> Volume absurdo em nicho religioso + mistura
+                        com política anti-migração</li>
+                    <li><strong>The New Pill (147K subs):</strong> Commentary que flerta com hate speech — mesmo 4+ anos
+                        não protege</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 10: DUPLICAÇÃO -->
+        <div class="section">
+            <div class="section-badge orange">Padrão #10 — Clones e Duplicatas</div>
+            <h2>Canais Duplicados com Conteúdo Idêntico</h2>
+            <p>Pares de canais que publicam conteúdo virtualmente idêntico — mesmos temas, mesmos títulos, mesma
+                estética.</p>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>Par: Dubai Secrets + Inside Dubai</h3>
+                    <p style="font-size:13px;">Ambos publicaram vídeos sobre "por que Dubai está desmoronando" com
+                        títulos quase idênticos:</p>
+                    <ul style="font-size:13px;padding-left:18px;margin-top:8px;">
+                        <li>"Dubai's Biggest Lie Is Falling Apart"</li>
+                        <li>"Why Dubai Is Becoming a City NOBODY Wants to Live In"</li>
+                        <li>"Dubai Was Built for Tourists — Now It's COLLAPSING"</li>
+                    </ul>
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Inside Dubai: 369 subs, 46 dias |
+                        Dubai Secrets: similar</p>
+                </div>
+                <div class="pattern-card">
+                    <h3>Par: Hollywood Lost Secrets + Celebrities Then and Today</h3>
+                    <p style="font-size:13px;">Ambos fazem "Then and Now" de celebridades com formato idêntico:</p>
+                    <ul style="font-size:13px;padding-left:18px;margin-top:8px;">
+                        <li>"Celebrity Plastic Surgery Disasters" (ambos)</li>
+                        <li>"Transgender Celebrities You Never Knew" (ambos)</li>
+                        <li>Formato: listicle + nostalgia + choque</li>
+                    </ul>
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Lost Secrets: 4.36K, 90 dias |
+                        Celebrities: 99.8K, 881 dias</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 11: ONDAS DE DERRUBADA + CICLO DE VIDA (dados do Checklist AntiBan) -->
+        <div class="section">
+            <div class="section-badge yellow">Padrão #11 — Dados Complementares</div>
+            <h2>Ondas de Derrubada e Ciclo de Vida</h2>
+            <p>Dados extraídos do Checklist AntiBan: o YouTube derruba canais em lote. 77.6% dos banimentos ocorreram em
+                apenas 2 ondas.</p>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>Ondas Temporais de Banimento</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Janela</th>
+                                <th>Canais</th>
+                                <th>%</th>
+                                <th>Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>6 days ago</td>
+                                <td>35</td>
+                                <td>21.7%</td>
+                                <td>Wave forte</td>
+                            </tr>
+                            <tr>
+                                <td>7 days ago</td>
+                                <td>37</td>
+                                <td>23.0%</td>
+                                <td>Pico da base</td>
+                            </tr>
+                            <tr>
+                                <td>8 days ago</td>
+                                <td>10</td>
+                                <td>6.2%</td>
+                                <td>Cauda da mesma limpeza</td>
+                            </tr>
+                            <tr>
+                                <td>14 days ago</td>
+                                <td>34</td>
+                                <td>21.1%</td>
+                                <td>Outra wave grande</td>
+                            </tr>
+                            <tr>
+                                <td>15 days ago</td>
+                                <td>9</td>
+                                <td>5.6%</td>
+                                <td>Cauda da wave anterior</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total 6-8 + 14-15</strong></td>
+                                <td><strong>125</strong></td>
+                                <td><strong>77.6%</strong></td>
+                                <td>Derrubada em lote confirmada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pattern-card">
+                    <h3>Ciclo de Vida dos Canais</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>Valor</th>
+                                <th>Interpretação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Até 120 dias</td>
+                                <td>39 (24.2%)</td>
+                                <td>Janela de risco inicial alta</td>
+                            </tr>
+                            <tr>
+                                <td>Até 365 dias</td>
+                                <td>69 (42.9%)</td>
+                                <td>Quase metade cai no 1º ano</td>
+                            </tr>
+                            <tr>
+                                <td>Mais de 1000 dias</td>
+                                <td>25 (15.5%)</td>
+                                <td>Canal antigo não garante segurança</td>
+                            </tr>
+                            <tr>
+                                <td>Mediana uploads/30 dias</td>
+                                <td>7.76</td>
+                                <td>Ritmo médio já é alto</td>
+                            </tr>
+                            <tr>
+                                <td>Percentil 90 uploads/30d</td>
+                                <td>27.07</td>
+                                <td>Top 10% em ritmo agressivo</td>
+                            </tr>
+                            <tr>
+                                <td>20+ uploads/30 dias</td>
+                                <td>34 (21.1%)</td>
+                                <td>Sinal de operação em escala</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>Métricas Medianas da Base</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Métrica</th>
+                                <th>Valor</th>
+                                <th>Leitura Prática</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mediana de vida</td>
+                                <td>446 dias</td>
+                                <td>Canal "antigo" também cai</td>
+                            </tr>
+                            <tr>
+                                <td>Mediana de uploads</td>
+                                <td>58</td>
+                                <td>Muitos caem antes de escalar</td>
+                            </tr>
+                            <tr>
+                                <td>Mediana de inscritos</td>
+                                <td>13,000</td>
+                                <td>Não é problema só de canal pequeno</td>
+                            </tr>
+                            <tr>
+                                <td>Mediana de views/vídeo</td>
+                                <td>32,978</td>
+                                <td>Canais com tração também caem</td>
+                            </tr>
+                            <tr>
+                                <td>Outlier score mediano</td>
+                                <td>0.47x</td>
+                                <td>Alguns com picos fortes caíram</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pattern-card">
+                    <h3>Combinações de Tags Mais Perigosas</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Par de Tags</th>
+                                <th>Canais</th>
+                                <th>Sinal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>news + politics</td>
+                                <td>23</td>
+                                <td>Cluster mais repetido</td>
+                            </tr>
+                            <tr>
+                                <td>news + society</td>
+                                <td>12</td>
+                                <td>Conflito social/político</td>
+                            </tr>
+                            <tr>
+                                <td>animation + video games</td>
+                                <td>11</td>
+                                <td>Risco de clone de fandom</td>
+                            </tr>
+                            <tr>
+                                <td>celebrity + internet culture</td>
+                                <td>7</td>
+                                <td>Clickbait de fama/fofoca</td>
+                            </tr>
+                            <tr>
+                                <td>fashion for women + lifestyle</td>
+                                <td>7</td>
+                                <td>Zona sensível para sexualização</td>
+                            </tr>
+                            <tr>
+                                <td>government + politics</td>
+                                <td>6</td>
+                                <td>Conteúdo de risco em massa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Insight: Derrubada em Lote</h4>
+                <p>O YouTube não derruba canais individualmente — opera em <strong>ondas coordenadas</strong>. Quando
+                    seu nicho entra no radar de uma limpeza, até canais periféricos da mesma categoria podem ser
+                    afetados. A combinação <strong>escala alta + metadata agressiva + baixo valor original + uso de
+                        material de terceiros</strong> é a fórmula mais perigosa.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 12: MATRIZ DE RISCO + TERMOS PERIGOSOS -->
+        <div class="section">
+            <div class="section-badge red">Padrão #12 — Matriz de Confirmação</div>
+            <h2>Matriz de Risco Confirmada por Dados</h2>
+            <p>Cruzamento dos padrões com evidências quantificáveis. Nível de confirmação baseado na frequência
+                observada.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Padrão de Risco</th>
+                        <th>Confirmação</th>
+                        <th>Evidência</th>
+                        <th>Nível</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Violação de copyright (audiobook/compilado/IP)</td>
+                        <td><span class="tag t-copy">FORTE</span></td>
+                        <td>24 títulos c/ audiobook/BBC radio/mrballen + 14 canais em repack</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Clickbait e desinformação</td>
+                        <td><span class="tag t-copy">FORTE</span></td>
+                        <td>breaking (24), shocking (21), panic (18), 1 min ago (15), exposed (13)</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Spam e repetição de conteúdo</td>
+                        <td><span class="tag t-copy">FORTE</span></td>
+                        <td>34 canais com 20+ uploads/30 dias; 77.6% em waves de ban</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Conteúdo inadequado para crianças</td>
+                        <td><span class="tag t-imp">MODERADA</span></td>
+                        <td>Clusters de kids + horror/mods/fandom em formatos repetidos</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Sexualização disfarçada</td>
+                        <td><span class="tag t-imp">MOD-FORTE</span></td>
+                        <td>8 canais no cluster sugestivo + termos pantyhose/stockings/heels</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Impersonation/celebridade</td>
+                        <td><span class="tag t-imp">MOD-FORTE</span></td>
+                        <td>Nomes de figuras públicas e formatos "parecendo oficial"</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Discurso de ódio/assédio</td>
+                        <td><span class="tag t-copy">FORTE</span></td>
+                        <td>6 canais com desumanização + narrativas de polarização</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>IA com IP protegido</td>
+                        <td><span class="tag t-imp">MOD-FORTE</span></td>
+                        <td>ai teaser trailer (10), ai movie trailer (6), superpanavision (16)</td>
+                        <td>Bloqueador</td>
+                    </tr>
+                    <tr>
+                        <td>Conteúdo médico gráfico</td>
+                        <td><span class="tag t-mis">MODERADA</span></td>
+                        <td>Procedimentos explícitos sem disclaimer (ex: Dr Foot)</td>
+                        <td>Ajustar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pattern-card">
+                <h3>Termos de Título com Maior Incidência de Ban</h3>
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <span class="bar-label">sprunki</span>
+                        <div class="bar-track">
+                            <div class="bar-fill red" style="width:100%">27</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">incredibox</span>
+                        <div class="bar-track">
+                            <div class="bar-fill red" style="width:96%">26</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">breaking</span>
+                        <div class="bar-track">
+                            <div class="bar-fill orange" style="width:89%">24</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">audiobook/bbc/mrballen</span>
+                        <div class="bar-track">
+                            <div class="bar-fill orange" style="width:89%">24</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">shocking</span>
+                        <div class="bar-track">
+                            <div class="bar-fill cyan" style="width:78%">21</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">panic</span>
+                        <div class="bar-track">
+                            <div class="bar-fill cyan" style="width:67%">18</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">1 min ago</span>
+                        <div class="bar-track">
+                            <div class="bar-fill pink" style="width:56%">15</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">exposed</span>
+                        <div class="bar-track">
+                            <div class="bar-fill purple" style="width:48%">13</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">caught on camera</span>
+                        <div class="bar-track">
+                            <div class="bar-fill purple" style="width:48%">13</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">rachel maddow</span>
+                        <div class="bar-track">
+                            <div class="bar-fill yellow" style="width:41%">11</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 13: CALCULADORA DE RISCO + CHECKLIST -->
+        <div class="section" id="calculadora">
+            <div class="section-badge cyan">Ferramenta — Calculadora Interativa</div>
+            <h2>Calculadora de Risco por Vídeo (0-100)</h2>
+            <p>Marque os sinais presentes no seu vídeo. O modelo calcula risco e recomenda GO / HOLD / NO-GO antes de
+                publicar.</p>
+
+            <div class="pattern-card" id="risk-calculator">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px">✓</th>
+                            <th>Sinal no Vídeo</th>
+                            <th style="width:60px">Peso</th>
+                            <th style="width:90px">Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" data-risk="25" data-blocker="1"></td>
+                            <td>Não tenho prova de direitos/licença dos assets usados</td>
+                            <td>+25</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="20" data-blocker="1"></td>
+                            <td>Uso obra/trechos de terceiro como base principal (pouca transformação)</td>
+                            <td>+20</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="20" data-blocker="1"></td>
+                            <td>Discurso de ódio / assédio / desumanização</td>
+                            <td>+20</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="15" data-blocker="0"></td>
+                            <td>Título/thumbnail com clickbait agressivo (BREAKING, SHOCKING, 1 MIN AGO)</td>
+                            <td>+15</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="12" data-blocker="1"></td>
+                            <td>Impersonation / uso de celebridade para parecer canal oficial</td>
+                            <td>+12</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="12" data-blocker="0"></td>
+                            <td>Formato repetido em massa (variante mínima de vídeos anteriores)</td>
+                            <td>+12</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="12" data-blocker="1"></td>
+                            <td>Conteúdo com risco para crianças (horror disfarçado, contexto ambíguo)</td>
+                            <td>+12</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="10" data-blocker="1"></td>
+                            <td>Sexualização sugestiva / disfarçada</td>
+                            <td>+10</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="10" data-blocker="0"></td>
+                            <td>Narrativa emocional extrema sem base clara (choque/medo)</td>
+                            <td>+10</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-risk="8" data-blocker="0"></td>
+                            <td>Conteúdo médico gráfico sem aviso/contexto adequado</td>
+                            <td>+8</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div
+                    style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;padding:16px;background:var(--surface-2);border-radius:10px;border:1px solid var(--border);">
+                    <div
+                        style="background:var(--surface-3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;font-weight:700;">
+                        Score: <span id="risk-score" style="color:var(--green);font-size:18px;">0</span>/100
+                    </div>
+                    <div
+                        style="background:var(--surface-3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;font-weight:700;">
+                        Bloqueadores: <span id="risk-blockers" style="color:var(--red);">0</span>
+                    </div>
+                    <div
+                        style="background:var(--surface-3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;font-weight:700;">
+                        Decisão: <span id="risk-decision" style="color:var(--green);font-size:16px;">GO</span>
+                    </div>
+                    <button id="clear-risk"
+                        style="background:var(--surface-3);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:13px;color:var(--text);cursor:pointer;margin-left:auto;">Limpar</button>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>📋 Regra de Decisão</h4>
+                <ul>
+                    <li><strong style="color:var(--green);">GO</strong> — 0 bloqueadores e no máximo 2 itens "Ajustar"
+                    </li>
+                    <li><strong style="color:var(--orange);">HOLD</strong> — 3 ou mais itens "Ajustar"</li>
+                    <li><strong style="color:var(--red);">NO-GO</strong> — 1 ou mais itens "Bloqueador" OU score ≥ 45
+                    </li>
+                </ul>
+                <p style="margin-top:12px;font-style:italic;color:var(--text-muted);">Pergunta de ouro: "Se eu tirar o
+                    material de terceiros e o clickbait, esse vídeo ainda se sustenta por valor próprio?"</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO 14: CHECKLIST PRÉ-PUBLICAÇÃO -->
+        <div class="section">
+            <div class="section-badge green">Padrão #14 — Checklist de Publicação</div>
+            <h2>Checklist Final: GO / HOLD / NO-GO</h2>
+            <p>Use este bloco antes de publicar cada vídeo. 21 perguntas de controle em 5 categorias.</p>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>1) Direitos e Licença</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pergunta</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>D1</td>
+                                <td>Tenho direito claro de todos os assets (vídeo, áudio, imagem, voz)?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>D2</td>
+                                <td>O vídeo não depende de obra de terceiro quase inteira?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>D3</td>
+                                <td>Tenho pasta de evidências (links, recibos, termos)?</td>
+                                <td><span class="tag t-mis">Ajustar</span></td>
+                            </tr>
+                            <tr>
+                                <td>D4</td>
+                                <td>Música "free" com permissão válida para YouTube comercial?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pattern-card">
+                    <h3>2) Originalidade Real</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pergunta</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>O1</td>
+                                <td>Roteiro próprio com opinião/análise (não colagem)?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>O2</td>
+                                <td>Narração/comentário relevante durante o vídeo?</td>
+                                <td><span class="tag t-mis">Ajustar</span></td>
+                            </tr>
+                            <tr>
+                                <td>O3</td>
+                                <td>Edição realmente transformativa?</td>
+                                <td><span class="tag t-mis">Ajustar</span></td>
+                            </tr>
+                            <tr>
+                                <td>O4</td>
+                                <td>Não é clone de outro canal (thumb, título, template)?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="pattern-card">
+                    <h3>3) Título, Thumbnail e Metadata</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pergunta</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>M1</td>
+                                <td>Título/thumb entregam exatamente o que o vídeo mostra?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>M2</td>
+                                <td>Evitei gatilhos de spam (BREAKING, 1 MIN AGO, SHOCKING)?</td>
+                                <td><span class="tag t-mis">Ajustar</span></td>
+                            </tr>
+                            <tr>
+                                <td>M3</td>
+                                <td>Não parece canal oficial de celebridade/mídia?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>M4</td>
+                                <td>Thumb evita sexualização, gore e humilhação?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pattern-card">
+                    <h3>4) Políticas Sensíveis</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pergunta</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P1</td>
+                                <td>Sem ódio/desumanização contra grupo protegido?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>P2</td>
+                                <td>Sem assédio pessoal, difamação ou doxxing?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>P3</td>
+                                <td>Violência/crime com contexto, não exploração de choque?</td>
+                                <td><span class="tag t-mis">Ajustar</span></td>
+                            </tr>
+                            <tr>
+                                <td>P4</td>
+                                <td>Sem menores em situação imprópria?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                            <tr>
+                                <td>P5</td>
+                                <td>Sem conteúdo adulto disfarçado de lifestyle/fashion?</td>
+                                <td><span class="tag t-copy">Bloqueador</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pattern-card">
+                <h3>5) Escala e Operação</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Pergunta</th>
+                            <th>Se Falhar</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S1</td>
+                            <td>Vídeo não é variação mínima de outro vídeo?</td>
+                            <td>Tratar como projeto novo</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td>S2</td>
+                            <td>Houve revisão humana final antes do upload?</td>
+                            <td>Não subir sem revisão</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                        <tr>
+                            <td>S3</td>
+                            <td>Não é reupload de vídeo removido com mudança cosmética?</td>
+                            <td>Reconstruir do zero</td>
+                            <td><span class="tag t-copy">Bloqueador</span></td>
+                        </tr>
+                        <tr>
+                            <td>S4</td>
+                            <td>Ritmo de postagem sustentável (sem flood)?</td>
+                            <td>Reduzir volume, subir qualidade</td>
+                            <td><span class="tag t-mis">Ajustar</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ============================================================= -->
+        <!-- NOVAS SEÇÕES — DADOS DO JSON NEXLEV (410 CANAIS) -->
+        <!-- ============================================================= -->
+
+        <div class="section">
+            <div class="section-badge cyan">Dados NexLev — Visão Geral</div>
+            <h2>📊 410 Canais Analisados do JSON NexLev</h2>
+            <p>Dados exclusivos de 410 canais encerrados entre Dezembro/2025 e Fevereiro/2026, com métricas detalhadas
+                não presentes nos 1.304 canais do relatório original.</p>
+
+            <div class="pattern-card">
+                <h3>Números Globais</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total de canais</td>
+                            <td><strong>410</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Views totais perdidas</td>
+                            <td><strong>6.9 bilhões</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Receita total perdida</td>
+                            <td><strong>$20.2 milhões</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Mediana de inscritos</td>
+                            <td>9.760</td>
+                        </tr>
+                        <tr>
+                            <td>Mediana de vida</td>
+                            <td>381 dias</td>
+                        </tr>
+                        <tr>
+                            <td>Mediana de uploads</td>
+                            <td>54.5 vídeos</td>
+                        </tr>
+                        <tr>
+                            <td>Mediana RPM</td>
+                            <td>$4.11</td>
+                        </tr>
+                        <tr>
+                            <td>Canais monetizados</td>
+                            <td>268 (65.4%)</td>
+                        </tr>
+                        <tr>
+                            <td>Outlier Score mediano</td>
+                            <td>0.57x</td>
+                        </tr>
+                        <tr>
+                            <td>Outlier >5x (suspeitos)</td>
+                            <td>38 canais</td>
+                        </tr>
+                        <tr>
+                            <td>Outlier <0.1x (artificial)</td>
+                            <td>51 canais</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge green">Descoberta #1 — Shorts como Escudo</div>
+            <h2>🛡️ Shorts = Escudo Anti-Ban (4.2x Mais Sobrevida)</h2>
+            <p>A descoberta mais surpreendente: canais que publicam Shorts vivem <strong>4.2 vezes mais tempo</strong>
+                antes de serem derrubados.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Com Shorts</th>
+                            <th>Sem Shorts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Canais</td>
+                            <td>135 (33%)</td>
+                            <td>275 (67%)</td>
+                        </tr>
+                        <tr>
+                            <td>Mediana de vida</td>
+                            <td style="color:var(--green);"><strong>762 dias</strong></td>
+                            <td style="color:var(--red);"><strong>182 dias</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Mediana de subs</td>
+                            <td>24.700</td>
+                            <td>7.860</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Insight</h4>
+                <p>Publicar Shorts sinaliza "canal ativo e diversificado" para o algoritmo do YouTube, reduzindo flags
+                    de spam/conteúdo repetitivo. Canais without Shorts tendem a ser detectados como operações
+                    single-purpose mais rapidamente.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge orange">Descoberta #2 — Monetização Acelera Ban</div>
+            <h2>💰 Monetizados Caem 22% Mais Rápido</h2>
+            <p>Contra-intuitivo: canais monetizados são derrubados ANTES dos não-monetizados.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Mediana de vida</th>
+                            <th>Receita total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monetizados (268)</td>
+                            <td style="color:var(--red);">344 dias</td>
+                            <td>$17.2M</td>
+                        </tr>
+                        <tr>
+                            <td>Não-monetizados (142)</td>
+                            <td style="color:var(--green);">420 dias</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Por quê?</h4>
+                <p>A monetização ativa sistemas de revisão adicionais: Content ID scan intenso, AdSense policy review, e
+                    denúncias de copyright de detentores de direitos. Canais não monetizados operam "abaixo do radar" —
+                    sem receita, sem incentivo para os detentores de direitos reportarem.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge red">Descoberta #3 — $20.2M Perdidos</div>
+            <h2>💸 Top 10 Canais com Maior Receita Antes do Ban</h2>
+            <p>Canais que geraram milhões antes de serem encerrados — a maioria durou mais de 1 ano.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Canal</th>
+                            <th>Receita</th>
+                            <th>Nicho</th>
+                            <th>Vida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oficial Jacqueline Real</td>
+                            <td style="color:var(--green);"><strong>$2.96M</strong></td>
+                            <td>Fashion/Lifestyle</td>
+                            <td>1.469d</td>
+                        </tr>
+                        <tr>
+                            <td>Mtv_dump</td>
+                            <td>$2.28M</td>
+                            <td>Reality TV/Celebrity</td>
+                            <td>655d</td>
+                        </tr>
+                        <tr>
+                            <td>KH Studio</td>
+                            <td>$1.66M</td>
+                            <td>Movies/Fan Trailers</td>
+                            <td>1.362d</td>
+                        </tr>
+                        <tr>
+                            <td>The Achiever</td>
+                            <td>$1.05M</td>
+                            <td>Cricket/Sports</td>
+                            <td>2.636d</td>
+                        </tr>
+                        <tr>
+                            <td>FOODIE ABROAD</td>
+                            <td>$854K</td>
+                            <td>Cooking/Travel</td>
+                            <td>1.260d</td>
+                        </tr>
+                        <tr>
+                            <td>Royal Family update</td>
+                            <td>$595K</td>
+                            <td>Royalty/Celebrity</td>
+                            <td>564d</td>
+                        </tr>
+                        <tr>
+                            <td>Avenlis Studio</td>
+                            <td>$538K</td>
+                            <td>Animation/Brainrot</td>
+                            <td>400d</td>
+                        </tr>
+                        <tr>
+                            <td>Master Chef</td>
+                            <td>$415K</td>
+                            <td>Cooking/ASMR</td>
+                            <td>1.012d</td>
+                        </tr>
+                        <tr>
+                            <td>Mehedi Mishu</td>
+                            <td>$409K</td>
+                            <td>Crime/Drama</td>
+                            <td>172d</td>
+                        </tr>
+                        <tr>
+                            <td>Olivia's Lookbook</td>
+                            <td>$406K</td>
+                            <td>Fashion/Elderly</td>
+                            <td>799d</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>⚠️ Padrão</h4>
+                <p>Todos os top earners operavam em nichos de copyright borderline: fan trailers, compilações de TV,
+                    highlights de eventos esportivos, ou conteúdo "brainrot" usando IPs protegidos. O dinheiro não
+                    protege — acelera a detecção.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge yellow">Descoberta #4 — Ondas por Hora</div>
+            <h2>⏰ Ondas de Derrubada com Precisão de Hora</h2>
+            <p>Timestamps exatos revelam que o YouTube executa bans em lote entre <strong>21h e 04h UTC</strong>.</p>
+
+            <div class="pattern-card" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div>
+                    <h3>Top Horários</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data/Hora (UTC)</th>
+                                <th>Canais</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color:var(--red);"><strong>2026-02-04 03:00</strong></td>
+                                <td><strong>21</strong></td>
+                            </tr>
+                            <tr>
+                                <td>2026-01-13 22:00</td>
+                                <td>14</td>
+                            </tr>
+                            <tr>
+                                <td>2026-01-13 21:00</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>2026-01-06 22:00</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>2025-12-17 05:00</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>2026-02-04 04:00</td>
+                                <td>9</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Top Dias</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color:var(--red);"><strong>2026-01-13</strong></td>
+                                <td><strong>49</strong></td>
+                            </tr>
+                            <tr>
+                                <td>2026-02-04</td>
+                                <td>45</td>
+                            </tr>
+                            <tr>
+                                <td>2026-01-27</td>
+                                <td>30</td>
+                            </tr>
+                            <tr>
+                                <td>2026-02-03</td>
+                                <td>29</td>
+                            </tr>
+                            <tr>
+                                <td>2026-01-06</td>
+                                <td>27</td>
+                            </tr>
+                            <tr>
+                                <td>2025-12-30</td>
+                                <td>27</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Padrão Temporal</h4>
+                <p>Terminações ocorrem semanalmente, geralmente segunda/terça-feira. O pico de 49 canais em 13/jan/2026
+                    coincide com o retorno pós-férias da equipe Trust & Safety. O horário noturno (21h-04h UTC) sugere
+                    pipeline automatizado executado fora do horário comercial dos EUA.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge cyan">Descoberta #5 — RPM & Duração por Nicho</div>
+            <h2>📈 RPM e Duração de Vídeo por Nicho</h2>
+            <p>Quanto cada nicho ganha por 1.000 views e quanto tempo têm seus vídeos — dados nunca processados antes.
+            </p>
+
+            <div class="pattern-card" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div>
+                    <h3>RPM por Nicho (Top 10)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nicho</th>
+                                <th>RPM Med.</th>
+                                <th>Vida Med.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Christianity</td>
+                                <td style="color:var(--green);">$8.41</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Mysteries</td>
+                                <td>$6.73</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Personal Finance</td>
+                                <td>$6.43</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Business</td>
+                                <td>$6.25</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Invest. Journalism</td>
+                                <td>$5.74</td>
+                                <td style="color:var(--red);">66d ⚠️</td>
+                            </tr>
+                            <tr>
+                                <td>Fashion (Women)</td>
+                                <td>$5.14</td>
+                                <td>834d</td>
+                            </tr>
+                            <tr>
+                                <td>Self Improvement</td>
+                                <td>$4.99</td>
+                                <td>478d</td>
+                            </tr>
+                            <tr>
+                                <td>Crime</td>
+                                <td>$4.89</td>
+                                <td>215d</td>
+                            </tr>
+                            <tr>
+                                <td>Documentary</td>
+                                <td>$4.66</td>
+                                <td>140d</td>
+                            </tr>
+                            <tr>
+                                <td>Horror Stories</td>
+                                <td>$4.92</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Duração por Nicho (Top 10)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nicho</th>
+                                <th>Mediana</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mystery</td>
+                                <td style="color:var(--orange);">142 min</td>
+                            </tr>
+                            <tr>
+                                <td>Stories</td>
+                                <td>105 min</td>
+                            </tr>
+                            <tr>
+                                <td>Horror Stories</td>
+                                <td>51 min</td>
+                            </tr>
+                            <tr>
+                                <td>Paranormal</td>
+                                <td>48 min</td>
+                            </tr>
+                            <tr>
+                                <td>Philosophy</td>
+                                <td>27 min</td>
+                            </tr>
+                            <tr>
+                                <td>Self Improvement</td>
+                                <td>26 min</td>
+                            </tr>
+                            <tr>
+                                <td>Crime</td>
+                                <td>24 min</td>
+                            </tr>
+                            <tr>
+                                <td>News</td>
+                                <td>16 min</td>
+                            </tr>
+                            <tr>
+                                <td>Animation</td>
+                                <td>7 min</td>
+                            </tr>
+                            <tr>
+                                <td>Vlogs</td>
+                                <td>3 min</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>⚠️ Insight: ROI Ajustado a Risco</h4>
+                <p><strong>Investigative Journalism</strong> é o nicho mais perigoso em termos de ROI: RPM alto ($5.74),
+                    mas vida mediana de apenas 66 dias. Quem entra esperando lucrar rápido é derrubado antes de atingir
+                    payback. <strong>Fashion for Women</strong> é o oposto: RPM bom ($5.14) com vida de 834 dias — o
+                    melhor equilíbrio risco/retorno.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge pink">Descoberta #6 — Canais Fantasma</div>
+            <h2>👻 87 Canais Inativos Derrubados Retroativamente</h2>
+            <p>O YouTube está encerrando canais que <strong>já pararam de postar há meses ou anos</strong>. 43 canais
+                estavam sem upload há mais de 1 ano quando foram banidos.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Canal</th>
+                            <th>Dias Inativo</th>
+                            <th>Subs</th>
+                            <th>Views</th>
+                            <th>Nicho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>JRE Pod Clips Daily</td>
+                            <td style="color:var(--red);"><strong>1.096d</strong></td>
+                            <td>4K</td>
+                            <td>2.7M</td>
+                            <td>Celebrity/News</td>
+                        </tr>
+                        <tr>
+                            <td>Musk Rogan WTF</td>
+                            <td style="color:var(--red);">1.065d</td>
+                            <td>3.5K</td>
+                            <td>1.8M</td>
+                            <td>Internet Culture</td>
+                        </tr>
+                        <tr>
+                            <td>Max Trade Academy</td>
+                            <td>843d</td>
+                            <td>24.5K</td>
+                            <td>1.4M</td>
+                            <td>Investing</td>
+                        </tr>
+                        <tr>
+                            <td>The New Pill</td>
+                            <td>769d</td>
+                            <td>147K</td>
+                            <td>13.7M</td>
+                            <td>Commentary</td>
+                        </tr>
+                        <tr>
+                            <td>Dr Foot</td>
+                            <td>732d</td>
+                            <td>12K</td>
+                            <td>5M</td>
+                            <td>Healthcare</td>
+                        </tr>
+                        <tr>
+                            <td>Breastfeeding w/ Michele</td>
+                            <td>688d</td>
+                            <td>53K</td>
+                            <td>17.4M</td>
+                            <td>Woman's Health</td>
+                        </tr>
+                        <tr>
+                            <td>Mary Romanova SPORT</td>
+                            <td>657d</td>
+                            <td>31K</td>
+                            <td>8.9M</td>
+                            <td>Fitness/Sports</td>
+                        </tr>
+                        <tr>
+                            <td>Simply Travelful</td>
+                            <td>630d</td>
+                            <td>12.5K</td>
+                            <td>7.7M</td>
+                            <td>Travel/Vlogs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>🔍 Por quê canais mortos são derrubados?</h4>
+                <ul>
+                    <li><strong>Reavaliação em lote:</strong> O YouTube aplica novos critérios de policy retroativamente
+                    </li>
+                    <li><strong>Strikes acumulados:</strong> Copyright claims continuam chegando mesmo após o canal
+                        parar</li>
+                    <li><strong>Limpeza de plataforma:</strong> Canais com conteúdo agora considerado problemático
+                        (impersonação, nomes de celebridades) são removidos mesmo inativos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge red">Descoberta #7 — Pares de Categorias Tóxicas</div>
+            <h2>☠️ Combinações de Nichos Mais Perigosas</h2>
+            <p>Ter DOIS nichos sensíveis ao mesmo tempo multiplica o risco exponencialmente.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Combinação</th>
+                            <th>Canais Derrubados</th>
+                            <th>Severidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>News + Politics</strong></td>
+                            <td style="color:var(--red);"><strong>74</strong></td>
+                            <td><span class="tag t-copy">Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>News + Society</td>
+                            <td>34</td>
+                            <td><span class="tag t-copy">Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>Military + News</td>
+                            <td>29</td>
+                            <td><span class="tag t-copy">Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>Politics + Society</td>
+                            <td>25</td>
+                            <td><span class="tag t-mis">Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Military + Politics</td>
+                            <td>19</td>
+                            <td><span class="tag t-mis">Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Animation + Video Games</td>
+                            <td>18</td>
+                            <td><span class="tag t-mis">Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Celebrity + Internet Culture</td>
+                            <td>17</td>
+                            <td><span class="tag t-mis">Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Animation + Kids Content</td>
+                            <td>15</td>
+                            <td><span class="tag t-mis">Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Documentary + History</td>
+                            <td>14</td>
+                            <td><span class="tag" style="background:var(--yellow);color:#000;">Moderado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Celebrity + Vlogs</td>
+                            <td>12</td>
+                            <td><span class="tag" style="background:var(--yellow);color:#000;">Moderado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Regra dos Pares</h4>
+                <p>Se o seu canal toca em DUAS das categorias vermelhas (News, Politics, Military, Celebrity), o risco
+                    de encerramento sobe para <strong>18%</strong> do total de derrubados. Diversifique para nichos
+                    verdes (Gaming, DIY, Lifestyle) para reduzir o perfil de risco.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-badge yellow">Descoberta #8 — Vídeos Mais Virais</div>
+            <h2>🔥 Top 10 Vídeos Mais Vistos Entre Canais Derrubados</h2>
+            <p>Os vídeos que mais bombaram antes dos canais serem encerrados — um retrato do que atrai views E
+                problemas.</p>
+
+            <div class="pattern-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Vídeo</th>
+                            <th>Views</th>
+                            <th>Canal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>When Stupid Cops Arrest FBI Agents</td>
+                            <td style="color:var(--green);"><strong>42M</strong></td>
+                            <td>Its a Crazy World</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>BRAINROT: Thanos Captures Italian Brainrot Animals</td>
+                            <td>22M</td>
+                            <td>Avenlis Studio</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>BRAINROT: Thanos's New Partner Hunts</td>
+                            <td>21M</td>
+                            <td>Avenlis Studio</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>GREGORY REPAIRS ANIMATRONICS (FNAF)</td>
+                            <td>12.4M</td>
+                            <td>Hornstromp FNAF 3D</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Coconut Heaven! Amazing Cutting Skills</td>
+                            <td>12M</td>
+                            <td>FOODIE ABROAD</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Riding on a Bull in Benidorm 2024</td>
+                            <td>10.6M</td>
+                            <td>Travel with Lisa</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Mike Tyson VS Jake Paul Full Fight</td>
+                            <td>9.8M</td>
+                            <td>Boxing World</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>WAIT!! SHE'S NOT FOOD!!! 🤰☠️</td>
+                            <td>9.1M</td>
+                            <td>Aysrel Eroshulm</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>BRAINROT: Thanos Hunts Gang Leaders</td>
+                            <td>8.7M</td>
+                            <td>Avenlis Studio</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Squid Game Gets Freaky – AI's Take</td>
+                            <td>8.5M</td>
+                            <td>Avenlis Studio</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>📊 Padrão dos Virais</h4>
+                <ul>
+                    <li><strong>4 dos top 10</strong> são do mesmo canal (Avenlis Studio) — uso de IPs protegidos
+                        (Thanos, Squid Game)</li>
+                    <li><strong>Bodycam/Police</strong> e <strong>Fight Highlights</strong> são magnetos de views + ban
+                    </li>
+                    <li><strong>FNAF/Kids animation</strong> domina o top 20 — conteúdo infantil com potencial de
+                        copyright</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO FINAL: REGRAS DE OURO -->
+        <div class="section">
+            <div class="section-badge green">Conclusão</div>
+            <h2>10 Regras de Ouro Extraídas da Análise</h2>
+
+            <div class="pattern-card" style="border-left:3px solid var(--green);">
+                <ol style="font-size:14px;padding-left:20px;line-height:2.2;">
+                    <li><strong>Não use nomes de celebridades/jornalistas</strong> como identidade do canal ou em todos
+                        os títulos</li>
+                    <li><strong>Evite vocabulário catastrofista repetido</strong> (BREAKING, PANICS, COLLAPSES em cada
+                        vídeo)</li>
+                    <li><strong>Canais com <60 dias de vida</strong> são automaticamente suspeitos — construa a longo
+                                prazo</li>
+                    <li><strong>Outlier Score >5x + canal novo</strong> = bandeira vermelha para revisão manual</li>
+                    <li><strong>Outlier Score <0.1x< /strong> = crescimento artificial de inscritos (bot farms)</li>
+                    <li><strong>Conteúdo infantil + violência/horror</strong> = COPPA violation imediata</li>
+                    <li><strong>Try-on hauls / see-through</strong> sobrevivem mais tempo que pornografia explícita mas
+                        eventualmente caem</li>
+                    <li><strong>Re-uploads de BBC, audiobooks ou filmes</strong> geram strikes automáticos de Content ID
+                    </li>
+                    <li><strong>Volume extremo (800+ uploads)</strong> em nichos sensíveis atrai revisão manual</li>
+                    <li><strong>Dois canais com conteúdo idêntico</strong> = ambos serão encerrados, não apenas um</li>
+                </ol>
+            </div>
+
+            <div class="insight-box">
+                <h4>📊 Resumo Numérico Final</h4>
+                <ul>
+                    <li><strong>Vida média dos canais encerrados:</strong> ~180 dias (mediana), ~48 dias para redes
+                        políticas</li>
+                    <li><strong>Nicho mais perigoso:</strong> Política/notícias com impersonação (35% dos terminados)
+                    </li>
+                    <li><strong>Nicho com maior sobrevida:</strong> Car detailing, gaming legítimo, DIY (800+ dias)</li>
+                    <li><strong>Outlier Score médio dos terminados:</strong> ~1.2x (inflado por outliers extremos como
+                        Fungus 68x)</li>
+                    <li><strong>Upload rate mais arriscado:</strong> >1 vídeo/dia em nichos de notícias/celebridades
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ========= DATASET EXPANDIDO — NotebookLM (600+ canais, CSV NexLev) ========= -->
+        <div class="section">
+            <div class="section-badge cyan">Dataset Expandido — NotebookLM</div>
+            <h2>Intelligence via CSV de 600+ Canais Encerrados</h2>
+            <p>Os dados abaixo foram extraídos do arquivo
+                <code>terminated-long-form-channels-2026-02-10-by-nexlev.csv</code>
+                com 22 colunas de metadados (subscribers, RPM, receita, frequência, outlier score etc.).
+                Processados via queries estruturadas no NotebookLM.
+            </p>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO NLM-1: VELOCIDADE DE ENCERRAMENTO -->
+        <div class="section">
+            <div class="section-badge red">NotebookLM #1 — Velocidade Letal</div>
+            <h2>Velocidade de Encerramento por Nicho + Frequência</h2>
+            <p>Canais com menos de 90 dias de vida — as combinações mais letais identificadas no dataset expandido.</p>
+
+            <div class="pattern-card" style="border-left:3px solid var(--red);">
+                <h3><span class="stat" style="color:var(--red);">12-17</span> dias — Política/News + uploads diários
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Canal</th>
+                            <th>Dias de Vida</th>
+                            <th>Uploads</th>
+                            <th>Freq/Mês</th>
+                            <th>Nicho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ch">US Political Daily</td>
+                            <td style="color:var(--red);font-weight:700;">12</td>
+                            <td>13</td>
+                            <td>12</td>
+                            <td>Notícias, Política</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Daily World Brief</td>
+                            <td style="color:var(--red);font-weight:700;">16</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>Política, Comentário Legal</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Inside the Union Tonight</td>
+                            <td style="color:var(--red);font-weight:700;">16</td>
+                            <td>19</td>
+                            <td>19</td>
+                            <td>Notícias, Jornalismo</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">GAVEL GUARD</td>
+                            <td style="color:var(--red);font-weight:700;">17</td>
+                            <td>8</td>
+                            <td>6</td>
+                            <td>Política, Governo</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">PrimeBrief</td>
+                            <td style="color:var(--red);font-weight:700;">17</td>
+                            <td>12</td>
+                            <td>12</td>
+                            <td>Política, Notícias</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pattern-card" style="border-left:3px solid var(--orange);">
+                <h3><span class="stat" style="color:var(--orange);">45-82</span> dias — Alta frequência (30+
+                    uploads/mês)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Canal</th>
+                            <th>Dias de Vida</th>
+                            <th>Uploads</th>
+                            <th>Freq/Mês</th>
+                            <th>Nicho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ch">Warren Buffett Wisdom</td>
+                            <td style="color:var(--orange);font-weight:700;">45</td>
+                            <td>35</td>
+                            <td>29</td>
+                            <td>Finanças <span class="tag t-imp">uso de imagem</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Inside Dubai</td>
+                            <td style="color:var(--orange);font-weight:700;">46</td>
+                            <td>14</td>
+                            <td>14</td>
+                            <td>Viagem <span class="tag t-spam">alarmismo</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ch">MIilitary Insight</td>
+                            <td style="color:var(--orange);font-weight:700;">50</td>
+                            <td>37</td>
+                            <td>36</td>
+                            <td>Militar, Crime</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Federal Uncut</td>
+                            <td style="color:var(--orange);font-weight:700;">51</td>
+                            <td>24</td>
+                            <td>28</td>
+                            <td>Geopolítica</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Denzel Inspired</td>
+                            <td style="color:var(--orange);font-weight:700;">55</td>
+                            <td>57</td>
+                            <td>56</td>
+                            <td>Motivacional <span class="tag t-imp">celebridade</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ch">LimitedGas</td>
+                            <td style="color:var(--orange);font-weight:700;">55</td>
+                            <td>37</td>
+                            <td>29</td>
+                            <td>Notícias, Economia</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">War Catalog</td>
+                            <td style="color:var(--orange);font-weight:700;">58</td>
+                            <td>35</td>
+                            <td>21</td>
+                            <td>Geopolítica, Militar</td>
+                        </tr>
+                        <tr>
+                            <td class="ch">The Revealed States</td>
+                            <td style="color:var(--red);font-weight:700;">68</td>
+                            <td>81</td>
+                            <td>67</td>
+                            <td>Notícias <span class="tag t-spam">2+ vídeos/dia</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ch">Yanis Explained</td>
+                            <td style="color:var(--orange);font-weight:700;">82</td>
+                            <td>43</td>
+                            <td>36</td>
+                            <td>Geopolítica, Militar</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠ Limiares Identificados</h4>
+                <ul style="font-size:14px;line-height:2;">
+                    <li><strong>Política + qualquer frequência</strong> = encerramento em 12-17 dias (mais rápido do
+                        dataset).</li>
+                    <li><strong>Qualquer nicho + 30+ uploads/mês</strong> = encerramento em 45-82 dias.</li>
+                    <li><strong>Zona segura de frequência:</strong> abaixo de 12 vídeos/mês com conteúdo original.</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO NLM-2: NICHOS FACHADA -->
+        <div class="section">
+            <div class="section-badge orange">NotebookLM #2 — Nichos Fachada</div>
+            <h2>Nichos "Seguros" que São Fachada</h2>
+            <p>Canais em nichos tradicionais (viagem, culinária, fitness, tecnologia) que foram encerrados — quase
+                todos usavam o nicho como disfarce para práticas proibidas.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Nicho Aparente</th>
+                        <th>Prática Real</th>
+                        <th>Dias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Travel with Lisa</td>
+                        <td>Viagem / Lifestyle</td>
+                        <td><span class="tag t-nsfw">voyeurismo</span> Foco em corpos femininos (praias, mechanical bull
+                            riding)</td>
+                        <td>616</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Inside Dubai</td>
+                        <td>Viagem / Sociedade</td>
+                        <td><span class="tag t-spam">alarmismo</span> "Dubai está colapsando" — desinformação econômica
+                        </td>
+                        <td>46</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Sand &amp; Sea</td>
+                        <td>Viagem / Vlogs</td>
+                        <td><span class="tag t-nsfw">voyeurismo</span> Zoom em biquínis, "Secret Nud3 Beach"</td>
+                        <td>1.062</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Creamy_Kelly</td>
+                        <td>Moda Feminina</td>
+                        <td><span class="tag t-nsfw">soft-core</span> "See-through", lingerie, fetiche disfarçado</td>
+                        <td>834</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Mary Romanova SPORT</td>
+                        <td>Fitness / Esportes</td>
+                        <td><span class="tag t-nsfw">sugestivo</span> Ângulos provocativos, "Riding a pipe"</td>
+                        <td>1.236</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Mini Cakes Stories</td>
+                        <td>Culinária / Kids</td>
+                        <td><span class="tag t-spam">content farm</span> Bolos coloridos repetitivos para hipnotizar
+                            crianças</td>
+                        <td>524</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Frugal Recipes</td>
+                        <td>Culinária / Finanças</td>
+                        <td><span class="tag t-spam">alarmismo</span> "Alimentos que o governo estoca secretamente"</td>
+                        <td>1.095</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Bacon &amp; Eggs Daily</td>
+                        <td>Culinária / DIY</td>
+                        <td><span class="tag t-spam">IA/automação</span> Variações infinitas da mesma receita</td>
+                        <td>137</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Dr. John</td>
+                        <td>Saúde / Nutrição</td>
+                        <td><span class="tag t-imp">pseudociência</span> "Nunca coma pepino com isso — causa câncer!"
+                        </td>
+                        <td>832</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Homemade Bicycle</td>
+                        <td>DIY / Engenharia</td>
+                        <td><span class="tag t-spam">clickbait</span> "Why It's Still Not Patented"</td>
+                        <td>76</td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Machines Hub</td>
+                        <td>Engenharia / Tech</td>
+                        <td><span class="tag t-copy">reuso</span> Compilações de máquinas trituradoras reutilizadas</td>
+                        <td>144</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>🔍 Insight Crítico</h4>
+                <p><strong>Nenhum canal genuíno</strong> de culinária, viagem ou fitness foi encerrado na base.
+                    Todos usavam o nicho como fachada para voyeurismo, content farm automatizada ou pseudociência
+                    alarmista.
+                    Nichos "seguros" por si só não geram bans. O problema é sempre a <strong>prática por trás</strong>.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO NLM-3: CONTENT FARMS MILIONÁRIAS -->
+        <div class="section">
+            <div class="section-badge red">NotebookLM #3 — Content Farms Milionárias</div>
+            <h2>Canais de Vida Longa + Alta Receita Antes do Ban</h2>
+            <p>Canais que operaram 2+ anos e geraram milhões antes de serem encerrados. Todos compartilham o mesmo
+                padrão: uploads industriais impossíveis sem automação.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Canal</th>
+                        <th>Receita Total</th>
+                        <th>Dias de Vida</th>
+                        <th>Uploads/Mês</th>
+                        <th>Nicho Real</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ch">Olivia's Lookbook</td>
+                        <td style="color:var(--red);font-weight:700;">$69.459.526</td>
+                        <td>799</td>
+                        <td>137</td>
+                        <td><span class="tag t-nsfw">moda sugestiva</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">The Cannabis Experts</td>
+                        <td style="color:var(--red);font-weight:700;">$55.780.915</td>
+                        <td>2.434</td>
+                        <td>162</td>
+                        <td><span class="tag t-imp">saúde alternativa</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Miss Models</td>
+                        <td style="color:var(--red);font-weight:700;">$48.547.366</td>
+                        <td>983</td>
+                        <td>148</td>
+                        <td><span class="tag t-nsfw">moda sugestiva</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">DutchCarContent</td>
+                        <td style="font-weight:700;">$15.588.172</td>
+                        <td>1.058</td>
+                        <td>307</td>
+                        <td><span class="tag t-copy">compilações</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Meggie Style</td>
+                        <td style="font-weight:700;">$12.164.015</td>
+                        <td>1.359</td>
+                        <td>234</td>
+                        <td><span class="tag t-nsfw">moda sugestiva</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Dr. John</td>
+                        <td style="font-weight:700;">$10.337.073</td>
+                        <td>832</td>
+                        <td>1.037</td>
+                        <td><span class="tag t-imp">pseudociência</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Dr Foot</td>
+                        <td style="font-weight:700;">$5.036.065</td>
+                        <td>936</td>
+                        <td>473</td>
+                        <td><span class="tag t-imp">médico gráfico</span></td>
+                    </tr>
+                    <tr>
+                        <td class="ch">Detail Projects</td>
+                        <td style="font-weight:700;">$1.636.131</td>
+                        <td>1.853</td>
+                        <td>973</td>
+                        <td><span class="tag t-copy">compilações</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <h4>⚠ Padrão Comum dos 8 Canais</h4>
+                <ul style="font-size:14px;line-height:2;">
+                    <li><strong>Volume industrial:</strong> 137 a 1.037 uploads por mês (impossível sem automação).</li>
+                    <li><strong>Conteúdo reutilizado:</strong> compilações, clickbait médico, moda sugestiva.</li>
+                    <li><strong>RPM alto + nicho visual:</strong> saúde ($5-11), moda ($3-7).</li>
+                    <li>O YouTube levou <strong>1 a 6 ANOS</strong> para detectar e encerrar esses canais.</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- SEÇÃO NLM-4: DURAÇÃO DE VÍDEO VS RISCO -->
+        <div class="section">
+            <div class="section-badge orange">NotebookLM #4 — Assinatura de Duração</div>
+            <h2>Duração de Vídeo como "Assinatura" de Automação</h2>
+            <p>A duração média funciona como fingerprint do tipo de automação. Extremos de duração são red flags para o
+                algoritmo.</p>
+
+            <div class="two-col">
+                <div class="pattern-card" style="border-left:3px solid var(--red);">
+                    <h3 style="color:var(--red);">⚡ Muito Curtos (&lt; 60s)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Canal</th>
+                                <th>Média</th>
+                                <th>Nicho</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ch">Zlyro</td>
+                                <td>13s</td>
+                                <td>Comics</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Biography Listeners</td>
+                                <td>43s</td>
+                                <td>Celebridades</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Avenlis Studio</td>
+                                <td>63s</td>
+                                <td>Animação</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Celeb Buzz</td>
+                                <td>65s</td>
+                                <td>Fofoca</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">EV Pulse</td>
+                                <td>76s</td>
+                                <td>Automotive</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Like &amp; Subscribe TV</td>
+                                <td>97s</td>
+                                <td>TV/Comédia</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size:13px;color:var(--text-muted);">Sinal: Shorts spam, clipes reutilizados,
+                        automação rasa.</p>
+                </div>
+
+                <div class="pattern-card" style="border-left:3px solid var(--red);">
+                    <h3 style="color:var(--red);">🕐 Muito Longos (&gt; 30 min)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Canal</th>
+                                <th>Média</th>
+                                <th>Nicho</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ch">Flamingo Fandom</td>
+                                <td>4h</td>
+                                <td>Internet Culture</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">The County Mysteries</td>
+                                <td>2.3h</td>
+                                <td>Paranormal</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Joe Moments</td>
+                                <td>1.7h</td>
+                                <td>Background noise</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Mehedi Mishu</td>
+                                <td>1.6h</td>
+                                <td>Crime</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Beyond Realities</td>
+                                <td>1.5h</td>
+                                <td>Tech/Elon Musk</td>
+                            </tr>
+                            <tr>
+                                <td class="ch">Loyal Lions</td>
+                                <td>1.1h</td>
+                                <td>Wildlife</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size:13px;color:var(--text-muted);">Sinal: Compilações infinitas, audiolivros
+                        piratas, narração IA.</p>
+                </div>
+            </div>
+
+            <div class="pattern-card" style="border-left:3px solid var(--cyan);">
+                <h3>Zona "Padrão" por Nicho (canais encerrados)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nicho</th>
+                            <th>Duração Típica</th>
+                            <th>Estratégia Detectada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Política/Notícias</td>
+                            <td>15-30 min</td>
+                            <td>Otimizado para mid-roll ads</td>
+                        </tr>
+                        <tr>
+                            <td>Crime/True Crime</td>
+                            <td>30-50 min</td>
+                            <td>Narração IA longa</td>
+                        </tr>
+                        <tr>
+                            <td>Animação/Kids</td>
+                            <td>Polarizado: &lt;60s ou &gt;3h</td>
+                            <td>Shorts spam OU compilação infantil</td>
+                        </tr>
+                        <tr>
+                            <td>Celebridades</td>
+                            <td>1-5 min</td>
+                            <td>Fofoca rápida automatizada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>📊 Regra Prática</h4>
+                <p>Se a duração média do seu canal se encaixa rigidamente num padrão acima,
+                    <strong>diversifique o formato</strong>. Padrões rígidos de duração são indicadores de automação
+                    para o algoritmo do YouTube. Varie entre 8-25 minutos para parecer humano.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div style="text-align:center;padding:40px 0;color:var(--text-muted);font-size:13px;">
+            <p>Análise gerada a partir de 1.304 canais do YouTube Niche Finder — Fevereiro 2026</p>
+            <p>Dados expandidos com CSV NexLev (600+ canais, 22 colunas) via NotebookLM</p>
+            <p>Dados extraídos de <code>Niche Finder.md</code> (12.657 linhas, 279KB) +
+                <code>terminated-long-form-channels-2026-02-10-by-nexlev.csv</code>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            var checks = Array.prototype.slice.call(document.querySelectorAll('#risk-calculator input[type="checkbox"][data-risk]'));
+            var scoreEl = document.getElementById('risk-score');
+            var blockersEl = document.getElementById('risk-blockers');
+            var decisionEl = document.getElementById('risk-decision');
+            var clearBtn = document.getElementById('clear-risk');
+
+            function recalc() {
+                var score = 0, blockers = 0;
+                checks.forEach(function (cb) {
+                    if (cb.checked) {
+                        score += Number(cb.getAttribute('data-risk') || 0);
+                        if (cb.getAttribute('data-blocker') === '1') blockers += 1;
+                    }
+                });
+                if (score > 100) score = 100;
+
+                var decision = 'GO', color = 'var(--green)';
+                if (blockers > 0 || score >= 45) {
+                    decision = 'NO-GO';
+                    color = 'var(--red)';
+                } else if (score >= 20) {
+                    decision = 'HOLD';
+                    color = 'var(--orange)';
+                }
+
+                scoreEl.textContent = String(score);
+                scoreEl.style.color = color;
+                blockersEl.textContent = String(blockers);
+                decisionEl.textContent = decision;
+                decisionEl.style.color = color;
+            }
+
+            checks.forEach(function (cb) { cb.addEventListener('change', recalc); });
+            clearBtn.addEventListener('click', function () {
+                checks.forEach(function (cb) { cb.checked = false; });
+                recalc();
+            });
+            recalc();
+        })();
+    </script>
+
+    <!-- SCRIPT: SIDEBAR SUMÁRIO -->
+    <script>
+        (function () {
+            var sidebar = document.getElementById('tocSidebar');
+            var toggle = document.getElementById('tocToggle');
+            var overlay = document.getElementById('tocOverlay');
+            var closeBtn = document.getElementById('tocClose');
+            var tocList = document.getElementById('tocList');
+            var tocSearch = document.getElementById('tocSearch');
+            var progressFill = document.getElementById('tocProgressFill');
+            var progressText = document.getElementById('tocProgressText');
+            var scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            // Build TOC from h2 elements
+            var headings = document.querySelectorAll('h2');
+            var tocItems = [];
+
+            headings.forEach(function (h, i) {
+                var id = 'toc-section-' + i;
+                h.id = id;
+
+                var li = document.createElement('li');
+                li.className = 'toc-item';
+
+                var a = document.createElement('a');
+                a.href = '#' + id;
+
+                var num = document.createElement('span');
+                num.className = 'toc-num';
+                num.textContent = String(i + 1);
+
+                var label = document.createElement('span');
+                // Clean emoji and get text
+                var text = h.textContent.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
+                // Shorten if too long
+                if (text.length > 50) text = text.substring(0, 47) + '...';
+                label.textContent = text;
+
+                a.appendChild(num);
+                a.appendChild(label);
+                li.appendChild(a);
+                tocList.appendChild(li);
+
+                tocItems.push({ el: li, heading: h, id: id, text: text.toLowerCase() });
+
+                // Smooth scroll on click
+                a.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close on mobile
+                    if (window.innerWidth < 1400) closeSidebar();
+                });
+            });
+
+            // Search filter
+            tocSearch.addEventListener('input', function () {
+                var q = this.value.toLowerCase();
+                tocItems.forEach(function (item) {
+                    if (q === '' || item.text.indexOf(q) !== -1) {
+                        item.el.classList.remove('hidden');
+                    } else {
+                        item.el.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Toggle sidebar
+            function openSidebar() {
+                sidebar.classList.add('open');
+                toggle.classList.add('active');
+                overlay.classList.add('visible');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                toggle.classList.remove('active');
+                overlay.classList.remove('visible');
+            }
+
+            toggle.addEventListener('click', function () {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            closeBtn.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            // Keyboard: Escape to close
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Scroll tracking: active section + progress
+            var ticking = false;
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(function () {
+                        updateActiveSection();
+                        updateProgress();
+                        updateScrollTopBtn();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            function updateActiveSection() {
+                var scrollPos = window.scrollY + 120;
+                var current = -1;
+
+                for (var i = 0; i < tocItems.length; i++) {
+                    if (tocItems[i].heading.offsetTop <= scrollPos) {
+                        current = i;
+                    }
+                }
+
+                tocItems.forEach(function (item, i) {
+                    if (i === current) {
+                        item.el.classList.add('active');
+                        // Scroll into view within the sidebar list
+                        if (sidebar.classList.contains('open') || window.innerWidth >= 1400) {
+                            item.el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                        }
+                    } else {
+                        item.el.classList.remove('active');
+                    }
+                });
+            }
+
+            function updateProgress() {
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? Math.min(100, Math.round((window.scrollY / docHeight) * 100)) : 0;
+                progressFill.style.width = pct + '%';
+                progressText.textContent = pct + '% lido';
+            }
+
+            function updateScrollTopBtn() {
+                if (window.scrollY > 600) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            }
+
+            scrollTopBtn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Initial state
+            updateActiveSection();
+            updateProgress();
+        })();
+    </script>
+</body>
+
+</html>
