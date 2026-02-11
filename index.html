@@ -1228,22 +1228,24 @@
 
         .table-zoom-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
+            top: 6px;
+            right: 6px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             background: var(--surface-2);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 16px;
+            font-size: 12px;
+            line-height: 1;
             cursor: pointer;
             z-index: 5;
             display: none;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            padding: 0;
         }
 
         .table-zoom-btn:hover {
@@ -4380,13 +4382,13 @@
                 var btn = document.createElement('button');
                 btn.className = 'table-zoom-btn';
                 btn.setAttribute('title', 'Ampliar tabela');
-                btn.innerHTML = '&#128269;';  // 🔍
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>';
                 btn.setAttribute('data-target', 'tbl-zoom-' + idx);
 
                 // Create hint text
                 var hint = document.createElement('div');
                 hint.className = 'table-zoom-hint';
-                hint.textContent = 'Toque na \uD83D\uDD0D para ampliar';
+                hint.textContent = 'Toque na lupa para ampliar';
 
                 // Insert into DOM
                 table.parentNode.insertBefore(container, table);
@@ -4403,19 +4405,21 @@
                         inner.classList.remove('zoomed-out');
                         inner.classList.add('zoomed-in');
                         inner.style.height = '';
-                        table.style.transform = '';
+                        inner.style.overflow = '';  // Clear inline override so CSS overflow-x:auto takes effect
+                        table.style.transform = 'none';
+                        table.style.transformOrigin = '';
                         btn.classList.add('active');
-                        btn.innerHTML = '&#10006;'; // ✖
+                        btn.innerHTML = '✕';
                         btn.setAttribute('title', 'Reduzir tabela');
-                        hint.textContent = 'Deslize para ver mais \u2192';
+                        hint.textContent = 'Deslize para ver mais →';
                     } else {
                         // Zoom out to fit
                         inner.classList.remove('zoomed-in');
                         inner.classList.add('zoomed-out');
                         btn.classList.remove('active');
-                        btn.innerHTML = '&#128269;'; // 🔍
+                        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>';
                         btn.setAttribute('title', 'Ampliar tabela');
-                        hint.textContent = 'Toque na \uD83D\uDD0D para ampliar';
+                        hint.textContent = 'Toque na lupa para ampliar';
                         applyZoomFit(table, inner);
                     }
                 });
