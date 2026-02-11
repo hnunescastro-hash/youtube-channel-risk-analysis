@@ -1169,17 +1169,23 @@
             }
         }
 
-        /* Scroll-to-top with progress ring */
+        /* Scroll-to-top with progress border */
         .scroll-top-wrapper {
+            --scroll-pct: 0;
             position: fixed;
             bottom: 24px;
             right: 24px;
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             z-index: 998;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: opacity 0.3s, visibility 0.3s;
+            background: conic-gradient(var(--accent) calc(var(--scroll-pct) * 1%),
+                    var(--surface-3) calc(var(--scroll-pct) * 1%));
+            padding: 3px;
+            cursor: pointer;
         }
 
         .scroll-top-wrapper.visible {
@@ -1187,38 +1193,12 @@
             visibility: visible;
         }
 
-        .scroll-top-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 48px;
-            height: 48px;
-            transform: rotate(-90deg);
-        }
-
-        .scroll-top-ring .ring-bg {
-            fill: none;
-            stroke: var(--surface-3);
-            stroke-width: 3;
-        }
-
-        .scroll-top-ring .ring-progress {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 3;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.15s;
-        }
-
         .scroll-top-btn {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 9px;
             background: var(--surface-2);
-            border: 1px solid var(--border);
+            border: none;
             color: var(--text-muted);
             font-size: 16px;
             cursor: pointer;
@@ -1231,7 +1211,6 @@
         .scroll-top-btn:hover {
             background: var(--surface-3);
             color: var(--text);
-            border-color: var(--text-muted);
         }
 
         /* ====== TABELAS ZOOM-FIT MOBILE ====== */
@@ -1357,10 +1336,6 @@
     </button>
 
     <div class="scroll-top-wrapper" id="scrollTopWrapper">
-        <svg class="scroll-top-ring" viewBox="0 0 48 48">
-            <circle class="ring-bg" cx="24" cy="24" r="21" />
-            <circle class="ring-progress" id="scrollRingProgress" cx="24" cy="24" r="21" />
-        </svg>
         <button class="scroll-top-btn" id="scrollTopBtn" title="Voltar ao topo">↑</button>
     </div>
 
@@ -4396,15 +4371,10 @@
 
             function updateScrollTopBtn() {
                 var wrapper = document.getElementById('scrollTopWrapper');
-                var ring = document.getElementById('scrollRingProgress');
-                var circumference = 2 * Math.PI * 21; // r=21
-                ring.style.strokeDasharray = circumference;
-
                 var scrollTop = window.scrollY;
                 var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                var pct = docHeight > 0 ? scrollTop / docHeight : 0;
-                var offset = circumference * (1 - pct);
-                ring.style.strokeDashoffset = offset;
+                var pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+                wrapper.style.setProperty('--scroll-pct', pct);
 
                 if (scrollTop > 600) {
                     wrapper.classList.add('visible');
