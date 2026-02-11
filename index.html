@@ -1186,6 +1186,98 @@
             color: var(--text);
             border-color: var(--text-muted);
         }
+
+        /* ====== TABELAS ZOOM-FIT MOBILE ====== */
+        .table-zoom-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .table-zoom-inner {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .table-zoom-inner table {
+            border: none;
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .table-zoom-inner.zoomed-out {
+            overflow: hidden;
+        }
+
+        .table-zoom-inner.zoomed-out table {
+            transform-origin: top left;
+            /* scale set by JS */
+        }
+
+        .table-zoom-inner.zoomed-in {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-zoom-inner.zoomed-in table {
+            transform: none !important;
+            min-width: 600px;
+        }
+
+        .table-zoom-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 5;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-zoom-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .table-zoom-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .table-zoom-hint {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .table-zoom-btn {
+                display: flex;
+            }
+
+            .table-zoom-hint {
+                display: block;
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -4265,17 +4357,117 @@
         })();
     </script>
 
-    <!-- SCRIPT: TABLE WRAPPER PARA MOBILE -->
+    <!-- SCRIPT: TABELAS ZOOM-FIT MOBILE -->
     <script>
         (function () {
+            var MOBILE_BREAKPOINT = 768;
             var tables = document.querySelectorAll('table');
-            tables.forEach(function (table) {
-                if (table.parentElement && table.parentElement.classList.contains('table-wrapper')) return;
-                var wrapper = document.createElement('div');
-                wrapper.className = 'table-wrapper';
-                table.parentNode.insertBefore(wrapper, table);
-                wrapper.appendChild(table);
+
+            tables.forEach(function (table, idx) {
+                // Skip if already wrapped
+                if (table.parentElement && table.parentElement.classList.contains('table-zoom-inner')) return;
+
+                // Create container
+                var container = document.createElement('div');
+                container.className = 'table-zoom-container';
+
+                // Create inner wrapper
+                var inner = document.createElement('div');
+                inner.className = 'table-zoom-inner zoomed-out';
+                inner.id = 'tbl-zoom-' + idx;
+
+                // Create zoom button
+                var btn = document.createElement('button');
+                btn.className = 'table-zoom-btn';
+                btn.setAttribute('title', 'Ampliar tabela');
+                btn.innerHTML = '&#128269;';  // 🔍
+                btn.setAttribute('data-target', 'tbl-zoom-' + idx);
+
+                // Create hint text
+                var hint = document.createElement('div');
+                hint.className = 'table-zoom-hint';
+                hint.textContent = 'Toque na \uD83D\uDD0D para ampliar';
+
+                // Insert into DOM
+                table.parentNode.insertBefore(container, table);
+                inner.appendChild(table);
+                container.appendChild(inner);
+                container.appendChild(btn);
+                container.appendChild(hint);
+
+                // Toggle zoom
+                btn.addEventListener('click', function () {
+                    var isZoomedOut = inner.classList.contains('zoomed-out');
+                    if (isZoomedOut) {
+                        // Expand to full size with scroll
+                        inner.classList.remove('zoomed-out');
+                        inner.classList.add('zoomed-in');
+                        inner.style.height = '';
+                        table.style.transform = '';
+                        btn.classList.add('active');
+                        btn.innerHTML = '&#10006;'; // ✖
+                        btn.setAttribute('title', 'Reduzir tabela');
+                        hint.textContent = 'Deslize para ver mais \u2192';
+                    } else {
+                        // Zoom out to fit
+                        inner.classList.remove('zoomed-in');
+                        inner.classList.add('zoomed-out');
+                        btn.classList.remove('active');
+                        btn.innerHTML = '&#128269;'; // 🔍
+                        btn.setAttribute('title', 'Ampliar tabela');
+                        hint.textContent = 'Toque na \uD83D\uDD0D para ampliar';
+                        applyZoomFit(table, inner);
+                    }
+                });
             });
+
+            function applyZoomFit(table, inner) {
+                if (window.innerWidth > MOBILE_BREAKPOINT) {
+                    table.style.transform = '';
+                    inner.style.height = '';
+                    return;
+                }
+
+                // Reset to measure natural width
+                table.style.transform = 'none';
+                inner.style.height = '';
+                inner.style.overflow = 'visible';
+
+                var tableWidth = table.scrollWidth;
+                var containerWidth = inner.parentElement.offsetWidth;
+
+                if (tableWidth > containerWidth) {
+                    var scale = containerWidth / tableWidth;
+                    scale = Math.max(scale, 0.45); // Min 45% readability
+                    table.style.transform = 'scale(' + scale + ')';
+                    table.style.transformOrigin = 'top left';
+                    var scaledHeight = table.offsetHeight * scale;
+                    inner.style.height = scaledHeight + 'px';
+                } else {
+                    table.style.transform = '';
+                    inner.style.height = '';
+                }
+
+                inner.style.overflow = 'hidden';
+            }
+
+            // Apply zoom-fit on load and resize
+            function applyAll() {
+                document.querySelectorAll('.table-zoom-inner.zoomed-out').forEach(function (inner) {
+                    var tbl = inner.querySelector('table');
+                    if (tbl) applyZoomFit(tbl, inner);
+                });
+            }
+
+            // Debounced resize
+            var resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(applyAll, 200);
+            });
+
+            // Initial apply after small delay for rendering
+            setTimeout(applyAll, 100);
         })();
     </script>
 </body>
