@@ -415,13 +415,341 @@
             gap: 16px;
         }
 
-        @media(max-width:768px) {
+        /* ====== RESPONSIVIDADE COMPLETA ====== */
+
+        /* Wrapper para tabelas com scroll horizontal no mobile */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper table {
+            border: none;
+            margin-bottom: 0;
+            min-width: 600px;
+        }
+
+        /* == TABLET (≤1024px) == */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 30px 20px 60px;
+            }
+
+            .header {
+                padding: 40px 0 36px;
+                margin-bottom: 36px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .section h2 {
+                font-size: 20px;
+            }
+
             .two-col {
                 grid-template-columns: 1fr;
             }
 
+            .pattern-card .stat {
+                font-size: 20px;
+            }
+
+            .section {
+                margin-bottom: 44px;
+            }
+        }
+
+        /* == MOBILE LANDSCAPE (≤768px) == */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px 50px;
+            }
+
+            .header {
+                padding: 30px 0 28px;
+                margin-bottom: 28px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                letter-spacing: -0.3px;
+            }
+
+            .header p {
+                font-size: 13px;
+            }
+
+            .header-badge {
+                font-size: 10px;
+                padding: 5px 12px;
+            }
+
+            .section h2 {
+                font-size: 18px;
+            }
+
+            .section>p {
+                font-size: 13px;
+            }
+
             .metrics-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .metric-card {
+                padding: 14px 12px;
+            }
+
+            .metric-value {
+                font-size: 22px;
+            }
+
+            .metric-label {
+                font-size: 11px;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .pattern-card {
+                padding: 16px;
+            }
+
+            .pattern-card h3 {
+                font-size: 14px;
+            }
+
+            .pattern-card .stat {
+                font-size: 18px;
+            }
+
+            .insight-box,
+            .warning-box,
+            .lesson-box {
+                padding: 14px 16px;
+            }
+
+            .bar-label {
+                min-width: 100px;
+                font-size: 11px;
+            }
+
+            .bar-track {
+                height: 20px;
+            }
+
+            .bar-fill {
+                font-size: 10px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            thead th {
+                padding: 10px 10px;
+                font-size: 10px;
+            }
+
+            tbody td {
+                padding: 9px 10px;
+            }
+
+            .section {
+                margin-bottom: 36px;
+            }
+
+            hr {
+                margin: 28px 0;
+            }
+
+            .tl-item h4 {
+                font-size: 13px;
+            }
+
+            .tl-item p {
+                font-size: 12px;
+            }
+        }
+
+        /* == MOBILE PORTRAIT (≤480px) == */
+        @media (max-width: 480px) {
+            .container {
+                padding: 14px 12px 40px;
+            }
+
+            .header {
+                padding: 24px 0 20px;
+                margin-bottom: 24px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .header-badge {
+                font-size: 9px;
+                padding: 4px 10px;
+                letter-spacing: 1px;
+            }
+
+            .section h2 {
+                font-size: 16px;
+                line-height: 1.3;
+            }
+
+            .section>p {
+                font-size: 12px;
+                margin-bottom: 16px;
+            }
+
+            .section-badge {
+                font-size: 9px;
+                padding: 4px 10px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .metric-card {
+                padding: 12px 10px;
+                border-radius: 10px;
+            }
+
+            .metric-value {
+                font-size: 18px;
+            }
+
+            .metric-label {
+                font-size: 10px;
+                letter-spacing: 0.5px;
+            }
+
+            .pattern-card {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            .pattern-card h3 {
+                font-size: 13px;
+            }
+
+            .pattern-card .stat {
+                font-size: 16px;
+            }
+
+            .insight-box,
+            .warning-box,
+            .lesson-box {
+                padding: 12px 14px;
+                border-radius: 8px;
+            }
+
+            .insight-box h4,
+            .warning-box h4,
+            .lesson-box h4 {
+                font-size: 12px;
+            }
+
+            .insight-box p,
+            .insight-box ul,
+            .warning-box p,
+            .lesson-box p,
+            .lesson-box ul {
+                font-size: 12px;
+            }
+
+            /* Bar chart: stack vertical on very small screens */
+            .bar-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                margin: 10px 0;
+            }
+
+            .bar-label {
+                min-width: unset;
+                text-align: left;
+                font-size: 11px;
+            }
+
+            .bar-track {
+                width: 100%;
+                height: 22px;
+            }
+
+            .timeline {
+                padding-left: 22px;
+            }
+
+            .timeline::before {
+                left: 6px;
+            }
+
+            .tl-item::before {
+                left: -20px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .tl-item h4 {
+                font-size: 12px;
+            }
+
+            .tl-item p {
+                font-size: 11px;
+            }
+
+            .section {
+                margin-bottom: 28px;
+            }
+
+            hr {
+                margin: 20px 0;
+            }
+
+            /* Checklist items */
+            .check-row label {
+                font-size: 12px;
+            }
+
+            /* Sidebar adjustments */
+            .toc-sidebar {
+                width: 260px;
+            }
+
+            .toc-toggle {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 18px;
+                bottom: 16px;
+                left: 16px;
+            }
+
+            .scroll-top-btn {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+                font-size: 16px;
+                bottom: 16px;
+                right: 16px;
             }
         }
 
@@ -3934,6 +4262,20 @@
             // Initial state
             updateActiveSection();
             updateProgress();
+        })();
+    </script>
+
+    <!-- SCRIPT: TABLE WRAPPER PARA MOBILE -->
+    <script>
+        (function () {
+            var tables = document.querySelectorAll('table');
+            tables.forEach(function (table) {
+                if (table.parentElement && table.parentElement.classList.contains('table-wrapper')) return;
+                var wrapper = document.createElement('div');
+                wrapper.className = 'table-wrapper';
+                table.parentNode.insertBefore(wrapper, table);
+                wrapper.appendChild(table);
+            });
         })();
     </script>
 </body>
