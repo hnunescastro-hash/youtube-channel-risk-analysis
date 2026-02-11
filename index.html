@@ -675,23 +675,38 @@
                 font-size: 12px;
             }
 
-            /* Bar chart: stack vertical on very small screens */
+            /* Bar chart: inline labels on small screens */
             .bar-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-                margin: 10px 0;
+                flex-direction: row;
+                align-items: center;
+                gap: 0;
+                margin: 4px 0;
             }
 
             .bar-label {
-                min-width: unset;
-                text-align: left;
-                font-size: 11px;
+                display: none;
             }
 
             .bar-track {
                 width: 100%;
-                height: 22px;
+                height: 26px;
+            }
+
+            .bar-fill {
+                position: relative;
+                justify-content: flex-start;
+                padding: 0 6px;
+                font-size: 10px;
+                min-width: 60px;
+            }
+
+            .bar-fill::before {
+                content: attr(data-label);
+                font-weight: 500;
+                opacity: 0.9;
+                margin-right: 6px;
+                white-space: nowrap;
+                font-size: 10px;
             }
 
             .timeline {
@@ -1154,31 +1169,63 @@
             }
         }
 
-        /* Scroll-to-top */
-        .scroll-top-btn {
+        /* Scroll-to-top with progress ring */
+        .scroll-top-wrapper {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 18px;
-            cursor: pointer;
+            width: 48px;
+            height: 48px;
             z-index: 998;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
         }
 
-        .scroll-top-btn.visible {
+        .scroll-top-wrapper.visible {
             opacity: 1;
             visibility: visible;
+        }
+
+        .scroll-top-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 48px;
+            height: 48px;
+            transform: rotate(-90deg);
+        }
+
+        .scroll-top-ring .ring-bg {
+            fill: none;
+            stroke: var(--surface-3);
+            stroke-width: 3;
+        }
+
+        .scroll-top-ring .ring-progress {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 3;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.15s;
+        }
+
+        .scroll-top-btn {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
         .scroll-top-btn:hover {
@@ -1309,7 +1356,13 @@
         <span class="icon-close">✕</span>
     </button>
 
-    <button class="scroll-top-btn" id="scrollTopBtn" title="Voltar ao topo">↑</button>
+    <div class="scroll-top-wrapper" id="scrollTopWrapper">
+        <svg class="scroll-top-ring" viewBox="0 0 48 48">
+            <circle class="ring-bg" cx="24" cy="24" r="21" />
+            <circle class="ring-progress" id="scrollRingProgress" cx="24" cy="24" r="21" />
+        </svg>
+        <button class="scroll-top-btn" id="scrollTopBtn" title="Voltar ao topo">↑</button>
+    </div>
 
     <div class="container">
 
@@ -4342,10 +4395,21 @@
             }
 
             function updateScrollTopBtn() {
-                if (window.scrollY > 600) {
-                    scrollTopBtn.classList.add('visible');
+                var wrapper = document.getElementById('scrollTopWrapper');
+                var ring = document.getElementById('scrollRingProgress');
+                var circumference = 2 * Math.PI * 21; // r=21
+                ring.style.strokeDasharray = circumference;
+
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? scrollTop / docHeight : 0;
+                var offset = circumference * (1 - pct);
+                ring.style.strokeDashoffset = offset;
+
+                if (scrollTop > 600) {
+                    wrapper.classList.add('visible');
                 } else {
-                    scrollTopBtn.classList.remove('visible');
+                    wrapper.classList.remove('visible');
                 }
             }
 
@@ -4356,6 +4420,19 @@
             // Initial state
             updateActiveSection();
             updateProgress();
+        })();
+    </script>
+
+    <!-- SCRIPT: BAR-CHART DATA-LABEL INJECTION -->
+    <script>
+        (function () {
+            document.querySelectorAll('.bar-row').forEach(function (row) {
+                var label = row.querySelector('.bar-label');
+                var fill = row.querySelector('.bar-fill');
+                if (label && fill) {
+                    fill.setAttribute('data-label', label.textContent.trim());
+                }
+            });
         })();
     </script>
 
